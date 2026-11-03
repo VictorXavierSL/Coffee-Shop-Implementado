@@ -1,0 +1,22 @@
+name: design_system
+description: >
+  Coffee Shop Design System — tokens (cor, tipografia, espaçamento, raio),
+  tema claro/escuro e biblioteca de componentes no padrão
+  Component / ViewModel / Factory. Extraído do Figma
+  "Coffee Shop Mobile App Design (Community)".
+publish_to: 'none'
+version: 1.0.0
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+  flutter: '>=3.27.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  google_fonts: ^6.2.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
