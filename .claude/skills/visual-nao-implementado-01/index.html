@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coffee Shop — Prévia visual (não oficial)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Tokens do Design System (README / docs/DESIGN_SYSTEM.md) ===== */
+  :root{
+    --primary:#C67C4E; --primaryContainer:#F9F2ED; --background:#F9F9F9; --surface:#FFFFFF;
+    --textPrimary:#242424; --textSecondary:#A2A2A2; --border:#E3E3E3;
+    --dark:#313131; --success:#2E9E6A; --danger:#D6453D;
+    --page:#ECE7E3; --pageText:#2B2420;
+    --r6:6px; --r8:8px; --r12:12px; --r16:16px; --r24:24px;
+  }
+  body.dark{
+    --primaryContainer:#3B2A20; --background:#141110; --surface:#211C19;
+    --textPrimary:#F5EDE8; --textSecondary:#A89C94; --border:#3D342E;
+    --page:#0D0B0A; --pageText:#E9DFD8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Sora,system-ui,sans-serif;background:var(--page);color:var(--pageText);transition:background .3s}
+  header.top{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--page) 88%,transparent);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);padding:14px 24px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+  header.top h1{font-size:18px;margin:0}
+  header.top p{margin:0;font-size:12px;opacity:.75;max-width:640px}
+  .spacer{flex:1}
+  .btn-toggle{font:inherit;font-size:12px;border:1px solid var(--border);background:var(--surface);color:var(--textPrimary);
+    padding:8px 14px;border-radius:999px;cursor:pointer}
+  .legend{display:flex;gap:8px;font-size:11px}
+  .tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:600;letter-spacing:.02em}
+  .tag.atual{background:#DDEFE5;color:#1F6B47}
+  .tag.plan{background:#FBE3D3;color:#8A4A22}
+  body.dark .tag.atual{background:#1E3A2C;color:#9FE0BE}
+  body.dark .tag.plan{background:#4A2E1D;color:#F3C3A0}
+
+  section.group{padding:28px 24px 8px}
+  section.group h2{font-size:15px;margin:0 0 4px}
+  section.group > p{font-size:12px;opacity:.7;margin:0 0 18px}
+  .row{display:flex;gap:28px;flex-wrap:wrap;align-items:flex-start}
+  figure{margin:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+  figcaption{font-size:11px;max-width:300px;display:flex;flex-direction:column;gap:4px}
+  figcaption b{font-size:12px}
+
+  /* ===== Moldura do celular ===== */
+  .phone{width:300px;height:620px;border-radius:38px;background:#111;padding:10px;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+  .screen{position:relative;width:100%;height:100%;border-radius:30px;overflow:hidden;background:var(--background);color:var(--textPrimary);
+    font-size:12px;display:flex;flex-direction:column}
+  .notch{position:absolute;top:6px;left:50%;transform:translateX(-50%);width:90px;height:20px;border-radius:12px;background:#111;z-index:20}
+  .scroll{flex:1;overflow-y:auto;scrollbar-width:none}
+  .scroll::-webkit-scrollbar{display:none}
+  .pad{padding:40px 18px 18px}
+
+  /* ===== Componentes ===== */
+  .title{font-size:16px;font-weight:600}
+  .headline{font-size:20px;font-weight:600}
+  .muted{color:var(--textSecondary)}
+  .price{font-size:16px;font-weight:600;color:var(--primary)}
+  .btn{display:block;width:100%;border:0;border-radius:var(--r16);padding:14px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;text-align:center}
+  .btn.primary{background:var(--primary);color:#fff}
+  .btn.outline{background:var(--surface);color:var(--textPrimary);border:1px solid var(--border)}
+  .btn.ghost{background:transparent;color:var(--primary)}
+  .field{background:var(--surface);border:1px solid var(--border);border-radius:var(--r12);padding:12px 14px;margin-bottom:10px;color:var(--textSecondary)}
+  .field.filled{color:var(--textPrimary)}
+  .field.err{border-color:var(--danger)}
+  .hint{font-size:10px;margin:-6px 0 10px 4px}
+  .hint.err{color:var(--danger)} .hint.ok{color:var(--success)}
+  .chip{display:inline-block;padding:7px 12px;border-radius:var(--r8);background:var(--surface);border:1px solid var(--border);font-size:11px;margin-right:6px;cursor:pointer}
+  .chip.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:40px 18px 10px}
+  .icon{width:36px;height:36px;border-radius:var(--r12);display:grid;place-items:center;background:var(--surface);border:1px solid var(--border);font-size:15px;cursor:pointer;position:relative}
+  .badge{position:absolute;top:-4px;right:-4px;background:var(--primary);color:#fff;border-radius:999px;font-size:9px;min-width:16px;height:16px;display:grid;place-items:center}
+  .divider{height:1px;background:var(--border);margin:14px 0}
+  .card{background:var(--surface);border-radius:var(--r16);padding:8px}
+  .sum-row{display:flex;justify-content:space-between;margin:6px 0}
+  .navbar{display:flex;justify-content:space-around;padding:12px 0 16px;background:var(--surface);border-top:1px solid var(--border);font-size:16px}
+  .navbar span.on{color:var(--primary)}
+  .navbar span{opacity:.6} .navbar span.on{opacity:1}
+
+  /* Café "fotografado" em CSS */
+  .coffee{border-radius:var(--r12);background:radial-gradient(circle at 50% 45%,#E9D2BE 0 26%,#9A5B34 27% 38%,#5A3420 39% 48%,#EFE5DC 49% 60%,var(--primaryContainer) 61%);aspect-ratio:1.25}
+  .coffee.c2{background:radial-gradient(circle at 50% 45%,#F2E3D3 0 30%,#B47A4E 31% 40%,#3F2416 41% 49%,#E7DDD3 50% 61%,#F3E8DF 62%)}
+  .coffee.c3{background:radial-gradient(circle at 50% 45%,#7C4A2C 0 32%,#4A2A18 33% 44%,#EADFD5 45% 58%,#F2E9E1 59%)}
+  .coffee.c4{background:radial-gradient(circle at 50% 45%,#FFFDF9 0 28%,#D9B48E 29% 40%,#6B3E22 41% 50%,#EDE3DA 51% 62%,#F6EEE7 63%)}
+
+  /* Home */
+  .home-head{background:linear-gradient(180deg,#131313,#313131);color:#fff;padding:40px 18px 70px}
+  .search{display:flex;gap:8px;margin-top:14px}
+  .search .s{flex:1;background:#2A2A2A;border-radius:var(--r12);padding:12px;color:#A2A2A2}
+  .search .f{width:42px;border-radius:var(--r12);background:var(--primary);display:grid;place-items:center}
+  .banner{margin:-56px 18px 0;height:110px;border-radius:var(--r16);background:linear-gradient(120deg,#5C3B28,#C67C4E 70%,#E8B48F);color:#fff;padding:14px;position:relative;overflow:hidden}
+  .banner .promo{background:#ED5151;color:#fff;font-size:10px;padding:3px 8px;border-radius:var(--r6);display:inline-block}
+  .banner h3{margin:8px 0 0;font-size:19px;line-height:1.2;max-width:60%;text-shadow:0 2px 6px rgba(0,0,0,.25)}
+  .banner .cup{position:absolute;right:-6px;bottom:-14px;width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,#E9D2BE 0 30%,#7A4527 31% 44%,#F1E6DC 45% 60%,transparent 61%)}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 18px 18px}
+  .pcard{background:var(--surface);border-radius:var(--r16);padding:8px;position:relative}
+  .pcard .rating{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.45);color:#fff;font-size:9px;padding:2px 6px;border-radius:0 0 var(--r12) 0}
+  .pcard .fav{position:absolute;top:10px;right:12px;font-size:13px;cursor:pointer;filter:drop-shadow(0 1px 2px rgba(0,0,0,.3))}
+  .pcard .n{font-weight:600;margin:8px 2px 2px}
+  .pcard .bottom{display:flex;justify-content:space-between;align-items:center;margin:6px 2px 0}
+  .plus{width:28px;height:28px;border-radius:var(--r8);background:var(--primary);color:#fff;display:grid;place-items:center;font-weight:700;cursor:pointer;border:0}
+
+  /* Índices em grãos (spec 005) */
+  .bean{width:16px;height:20px;display:inline-block;margin-right:3px}
+  .idx{display:flex;align-items:center;justify-content:space-between;margin:7px 0}
+  .idx .lab{width:70px;font-size:11px}
+  .bag{display:flex;gap:12px;align-items:center;background:var(--primaryContainer);border-radius:var(--r16);padding:10px;margin:12px 0}
+  .sizes{display:flex;gap:8px;margin:8px 0}
+  .size{flex:1;border:1px solid var(--border);border-radius:var(--r12);padding:8px 4px;text-align:center;background:var(--surface);cursor:pointer}
+  .size small{display:block;color:var(--textSecondary);font-size:9px;margin-top:2px}
+  .size.on{border-color:var(--primary);color:var(--primary);background:var(--primaryContainer)}
+  .stars{color:#FBBE21;letter-spacing:1px}
+  .review{background:var(--surface);border-radius:var(--r12);padding:10px;margin-top:8px}
+  .buybar{display:flex;gap:12px;align-items:center;padding:14px 18px 18px;background:var(--surface);border-top:1px solid var(--border)}
+
+  /* Drawer do carrinho (spec 006) */
+  .overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:10;display:none}
+  .drawer{position:absolute;top:0;right:0;bottom:0;width:82%;background:var(--background);z-index:11;transform:translateX(100%);transition:transform .35s ease;padding:40px 14px 14px;display:flex;flex-direction:column}
+  .screen.cart-open .overlay{display:block}
+  .screen.cart-open .drawer{transform:none}
+  .citem{display:flex;gap:10px;align-items:center;background:var(--surface);border-radius:var(--r12);padding:8px;margin-bottom:8px}
+  .citem .coffee{width:46px;aspect-ratio:1}
+  .stepper{display:flex;gap:8px;align-items:center;margin-left:auto}
+  .stepper button{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--textPrimary);cursor:pointer}
+
+  /* Pagamento */
+  .pay{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r12);padding:10px;margin-bottom:8px;cursor:pointer}
+  .pay.on{border-color:var(--primary);background:var(--primaryContainer)}
+  .pay .dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border)}
+  .pay.on .dot{border-color:var(--primary);background:radial-gradient(var(--primary) 0 40%,transparent 45%)}
+  .seg{display:flex;background:var(--border);border-radius:var(--r12);padding:4px;margin-bottom:12px}
+  .seg span{flex:1;text-align:center;padding:8px;border-radius:var(--r8);cursor:pointer}
+  .seg span.on{background:var(--primary);color:#fff;font-weight:600}
+
+  /* Telas de estado (spec 003) */
+  .state{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 26px;gap:12px}
+  .state h3{margin:0;font-size:17px}
+  .state p{margin:0;color:var(--textSecondary);line-height:1.5}
+  .anim-id{font-family:ui-monospace,monospace;font-size:9px;color:var(--textSecondary);border:1px dashed var(--border);padding:2px 6px;border-radius:6px}
+
+  /* Animações simples (substituíveis — ver docs/ASSETS.md planejado) */
+  @keyframes steam{0%{transform:translateY(8px) scaleX(1);opacity:0}30%{opacity:.8}100%{transform:translateY(-34px) scaleX(1.4);opacity:0}}
+  .steam path{animation:steam 2.4s ease-in infinite;transform-box:fill-box}
+  .steam path:nth-child(2){animation-delay:.6s}.steam path:nth-child(3){animation-delay:1.2s}
+  @keyframes drip{0%,100%{transform:scaleX(1)}50%{transform:scaleX(1.08)}}
+  .puddle{animation:drip 3s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+  @keyframes fall{0%{transform:translateY(-30px) rotate(0)}60%{transform:translateY(46px) rotate(28deg)}75%{transform:translateY(40px) rotate(24deg)}100%{transform:translateY(46px) rotate(28deg)}}
+  .falling{animation:fall 2.8s cubic-bezier(.5,0,.8,1) infinite;transform-box:fill-box;transform-origin:center}
+  @keyframes flicker{0%,100%{opacity:.25}45%{opacity:.25}50%{opacity:.9}55%{opacity:.25}}
+  .neon{animation:flicker 2.8s infinite}
+  @keyframes rise{from{transform:translateY(60%)}to{transform:translateY(0)}}
+  .fill{animation:rise 1.6s ease-out forwards}
+  @keyframes pop{0%{transform:scale(0);opacity:0}70%{transform:scale(1.15);opacity:1}100%{transform:scale(1)}}
+  .check{animation:pop .5s .9s both}
+  @keyframes smoke{0%{transform:translateY(30px) scale(.6);opacity:0}40%{opacity:.85}100%{transform:translateY(-50px) scale(1.5);opacity:0}}
+  .smoke circle{animation:smoke 2.2s ease-out infinite;transform-box:fill-box;transform-origin:center}
+  .smoke circle:nth-child(2){animation-delay:.4s}.smoke circle:nth-child(3){animation-delay:.8s}.smoke circle:nth-child(4){animation-delay:1.2s}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .spinner{width:46px;height:46px;border-radius:50%;border:4px solid var(--border);border-top-color:var(--primary);animation:spin 1s linear infinite}
+  @keyframes courier{0%{offset-distance:0%}100%{offset-distance:100%}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+  /* Popup indicação do dia */
+  .modal{position:absolute;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:12;padding:22px}
+  .modal .box{background:var(--surface);border-radius:var(--r24);padding:16px;width:100%;text-align:center}
+
+  /* Mapa (spec 007) */
+  .map{position:relative;flex:1;background:#EEF0E6}
+  body.dark .map{background:#1E211B}
+  .map svg{width:100%;height:100%;display:block}
+  .map-sheet{position:absolute;left:10px;right:10px;bottom:10px;background:var(--surface);border-radius:var(--r16);padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+  .progress{display:flex;gap:4px;margin:8px 0}
+  .progress i{flex:1;height:4px;border-radius:4px;background:var(--border)}
+  .progress i.on{background:var(--success)}
+  .note{position:absolute;top:44px;left:10px;right:10px;font-size:10px;background:var(--surface);border-radius:var(--r8);padding:6px 8px;z-index:3;border:1px solid var(--border)}
+
+  footer{padding:30px 24px 50px;font-size:11px;opacity:.7;max-width:900px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <h1>☕ Coffee Shop: prévia visual</h1>
+    <p>Rascunho só visual, fora do repositório. Junta o que o app já tem com o que as specs 001–008 planejam.
+      Cores, fontes e espaçamentos são os tokens do Design System. Preços são ilustrativos, em R$.</p>
+  </div>
+  <div class="spacer"></div>
+  <div class="legend"><span class="tag atual">Atual · já existe no código</span><span class="tag plan">Planejado · specs</span></div>
+  <button class="btn-toggle" id="theme">🌙 Tema escuro</button>
+</header>
+
+<!-- ===================== 1. ENTRADA E CONTA ===================== -->
+<section class="group">
+  <h2>1 · Entrada e conta</h2>
+  <p>Launch com café fumegante, onboarding, login por e-mail ou usuário, Google/Apple simulado e criação de conta com confirmação de e-mail automática.</p>
+  <div class="row">
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="state" style="background:linear-gradient(180deg,#131313,#3A2A20);color:#fff">
+          <svg width="130" height="150" viewBox="0 0 130 150" aria-label="Café fumegante">
+            <g class="steam" fill="none" stroke="#E9D2BE" stroke-width="4" stroke-linecap="round">
+              <path d="M45 50 q-8 -12 0 -24 q8 -12 0 -24"/><path d="M65 50 q-8 -12 0 -24 q8 -12 0 -24"/><path d="M85 50 q-8 -12 0 -24 q8 -12 0 -24"/>
+            </g>
+            <path d="M25 62 h80 v38 a34 34 0 0 1 -34 34 h-12 a34 34 0 0 1 -34 -34z" fill="#C67C4E"/>
+            <path d="M105 72 h8 a14 14 0 0 1 0 28 h-8" fill="none" stroke="#C67C4E" stroke-width="7"/>
+            <ellipse cx="65" cy="62" rx="40" ry="8" fill="#5A3420"/>
+          </svg>
+          <h3 style="color:#fff">Coffee Shop</h3>
+          <p style="color:#C9B8AC">Preparando seu café…</p>
+          <span class="anim-id" style="color:#C9B8AC;border-color:#6b5546">coffee_steaming</span>
+        </div>
+      </div></div>
+      <figcaption><b>Launch / transição do login</b><span><span class="tag plan">003</span> Café fumegante, exibido por no mínimo 600 ms. A Launch (verifica a sessão) já existe.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div style="flex:1;background:radial-gradient(circle at 50% 30%,#7A4A2E 0 18%,#3B2418 19% 32%,#141110 33%);display:flex;align-items:flex-end">
+          <div style="padding:22px;color:#fff;text-align:center;background:linear-gradient(transparent,#000 35%)">
+            <div class="headline" style="font-size:24px;line-height:1.25">Café tão bom que seu paladar vai sorrir</div>
+            <p style="color:#A2A2A2;margin:10px 0 18px">Bem-vindo à nossa cafeteria! Escolha seu café favorito.</p>
+            <button class="btn primary">Começar</button>
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Onboarding</b><span><span class="tag atual">Atual</span> Boas-vindas da marca, como no Figma.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="scroll pad">
+          <div class="headline" style="margin-top:14px">Entrar</div>
+          <p class="muted" style="margin:4px 0 18px">Use seu e-mail <b>ou</b> nome de usuário</p>
+          <div class="field filled">ana@coffee.dev</div>
+          <div class="field filled">••••••••</div>
+          <div class="hint err">Usuário ou senha incorretos.</div>
+          <button class="btn primary" style="margin-top:6px">Entrar</button>
+          <div style="text-align:center;margin:14px 0;color:var(--textSecondary);font-size:11px">ou continue com</div>
+          <button class="btn outline" style="margin-bottom:8px"><b style="color:#4285F4">G</b>&nbsp; Continuar com Google</button>
+          <button class="btn outline"> Continuar com Apple</button>
+          <p class="muted" style="font-size:10px;text-align:center;margin-top:8px">Google e Apple são <b>simulados</b> (ver SIMULACOES.md)</p>
+          <button class="btn ghost" style="margin-top:4px">Criar conta</button>
+          <div class="card" style="margin-top:8px;font-size:10px;line-height:1.6;border:1px dashed var(--border)">
+            <b>Demo:</b> e-mail <code>ana@coffee.dev</code> · usuário <code>bruno.palmas</code><br>
+            5 erros seguidos → bloqueio de 15 min
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Login</b><span><span class="tag atual">Atual</span> + <span class="tag plan">004</span> Login por e-mail ou usuário, mensagem genérica de erro, Google/Apple simulado.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="scroll pad">
+          <div class="title" style="margin-top:8px">← Criar conta</div>
+          <div style="display:flex;justify-content:center;margin:16px 0">
+            <div style="width:78px;height:78px;border-radius:50%;background:var(--primaryContainer);display:grid;place-items:center;font-size:24px;font-weight:700;color:var(--primary);position:relative">AS
+              <span style="position:absolute;bottom:-2px;right:-2px;background:var(--primary);color:#fff;border-radius:50%;width:26px;height:26px;display:grid;place-items:center;font-size:12px">📷</span></div>
+          </div>
+          <p class="muted" style="text-align:center;font-size:10px;margin:-6px 0 12px">Foto opcional · galeria ou câmera</p>
+          <div class="field filled">Ana Souza</div>
+          <div class="field filled">ana.souza</div>
+          <div class="field filled err">ana@coffee</div><div class="hint err">E-mail inválido</div>
+          <div class="field filled">••••••••</div><div class="hint ok">✓ 8+ caracteres, letra e número</div>
+          <div class="field filled">••••••••</div>
+          <div class="card" style="display:flex;gap:10px;align-items:center;margin:8px 0 12px">
+            <div class="spinner" style="width:22px;height:22px;border-width:3px"></div>
+            <div><b>Confirmando e-mail…</b><div class="muted" style="font-size:10px">Simulado: sempre aprova, sem código</div></div>
+          </div>
+          <button class="btn primary">Criar conta</button>
+        </div>
+      </div></div>
+      <figcaption><b>Criar conta</b><span><span class="tag plan">004</span> Validação de e-mail, força da senha, foto opcional e confirmação automática.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== 2. CATÁLOGO ===================== -->
+<section class="group">
+  <h2>2 · Catálogo</h2>
+  <p>Home como no Figma (com endereço em Palmas-TO), popup aleatório da indicação do dia, detalhes com o grão e os índices, avaliações e favoritos. <b>Interativo:</b> toque em "+", ♡, nos tamanhos e na sacola.</p>
+  <div class="row">
+
+    <figure>
+      <div class="phone"><div class="screen" id="home"><div class="notch"></div>
+        <div class="scroll">
+          <div class="home-head">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div><div style="color:#A2A2A2;font-size:10px">Localização</div><div style="font-weight:600">Plano Diretor Sul, Palmas-TO ▾</div></div>
+              <div class="icon" data-open-cart style="background:#2A2A2A;border-color:#2A2A2A;color:#fff">🛍<span class="badge" data-cart-count>2</span></div>
+            </div>
+            <div class="search"><div class="s">🔍 Buscar café</div><div class="f">⚙</div></div>
+          </div>
+          <div class="banner"><span class="promo">Promo</span><h3>Leve 2, pague 1</h3><div class="cup"></div></div>
+          <div style="padding:16px 18px 10px;white-space:nowrap;overflow-x:auto;scrollbar-width:none">
+            <span class="chip on">Todos</span><span class="chip">Machiato</span><span class="chip">Latte</span><span class="chip">Americano</span>
+          </div>
+          <div class="grid" id="grid"></div>
+        </div>
+        <div class="navbar"><span class="on">⌂</span><span>♡</span><span data-open-cart style="cursor:pointer">🛍</span><span>🔔</span></div>
+        <div class="overlay" data-close-cart></div>
+        <div class="drawer" id="drawer-home"></div>
+      </div></div>
+      <figcaption><b>Home + carrinho lateral</b><span><span class="tag atual">Atual</span> + <span class="tag plan">005</span> <span class="tag plan">006</span> Toque na sacola para abrir o painel lateral, que aparece em todas as telas de compra menos no mapa.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="scroll" style="filter:blur(1.5px)">
+          <div class="home-head" style="padding-bottom:30px"><div style="font-weight:600">Plano Diretor Sul, Palmas-TO</div></div>
+          <div class="grid" style="padding-top:14px"><div class="pcard"><div class="coffee"></div></div><div class="pcard"><div class="coffee c2"></div></div><div class="pcard"><div class="coffee c3"></div></div><div class="pcard"><div class="coffee c4"></div></div></div>
+        </div>
+        <div class="modal"><div class="box">
+          <div class="muted" style="font-size:10px;letter-spacing:.08em">✨ INDICAÇÃO DO DIA</div>
+          <div class="coffee c4" style="margin:12px auto;width:70%"></div>
+          <div class="title">Caramel Machiato</div>
+          <p class="muted" style="margin:6px 0 12px;font-size:11px">Porque você pediu <b>Mocha Fusi</b> recentemente (mesma categoria)</p>
+          <button class="btn primary" style="margin-bottom:6px">Ver café</button>
+          <button class="btn ghost">Agora não</button>
+          <div class="muted" style="font-size:9px;margin-top:6px">Sem histórico de pedidos → mostra o mais consumido da loja</div>
+        </div></div>
+      </div></div>
+      <figcaption><b>Popup: indicação do dia</b><span><span class="tag plan">005</span> Aparece de forma aleatória (50%) ao abrir o app. O servidor calcula a sugestão.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen" id="detail"><div class="notch"></div>
+        <div class="topbar"><div class="icon">‹</div><b>Detalhes</b><div class="icon" id="detail-fav" style="cursor:pointer">♡</div></div>
+        <div class="scroll" style="padding:0 18px 14px">
+          <div class="coffee"></div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:10px">
+            <div><div class="headline">Caffe Mocha</div><div class="muted">Ice/Hot</div></div>
+            <div><span class="stars">★</span> <b>4,8</b> <span class="muted">(230)</span></div>
+          </div>
+          <div class="bag">
+            <svg width="52" height="62" viewBox="0 0 52 62" aria-label="Saco de grão">
+              <path d="M8 10 q18 -8 36 0 l4 46 q-22 8 -44 0z" fill="#B98A5E"/><path d="M8 10 q18 -8 36 0 l-2 6 q-16 -6 -32 0z" fill="#8B5E3C"/>
+              <rect x="14" y="26" width="24" height="18" rx="3" fill="#F9F2ED"/><ellipse cx="26" cy="35" rx="5" ry="7" fill="#5A3420"/><path d="M26 29 q-2 6 0 12" stroke="#B98A5E" stroke-width="1.4" fill="none"/>
+            </svg>
+            <div><div class="muted" style="font-size:10px">GRÃO</div><b>Arábica Cerrado Mineiro</b><div class="muted" style="font-size:10px">Origem: MG · torra média</div></div>
+          </div>
+          <div class="title" style="font-size:13px">Perfil do café</div>
+          <div id="indices"></div>
+          <div class="muted" style="font-size:9px;margin-bottom:8px">Grão claro = índice nulo · escuro = máximo (como estrelas)</div>
+          <div class="divider"></div>
+          <div class="title" style="font-size:13px">Descrição</div>
+          <p class="muted" style="line-height:1.6;margin:6px 0">Espresso encorpado com chocolate e leite vaporizado, finalizado com uma espuma macia. <span style="color:var(--primary);font-weight:600">Ler mais</span></p>
+          <div class="title" style="font-size:13px">Tamanho</div>
+          <div class="sizes" id="sizes"></div>
+          <div class="divider"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="title" style="font-size:13px">Avaliações</div><span style="color:var(--primary);font-size:11px;font-weight:600">Avaliar ✎</span>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center;margin:8px 0">
+            <div style="font-size:30px;font-weight:700">4,8</div>
+            <div><div class="stars">★★★★★</div><div class="muted" style="font-size:10px">230 avaliações</div></div>
+          </div>
+          <div class="review"><b>Carla M.</b> <span class="stars" style="font-size:10px">★★★★★</span> <span class="muted" style="font-size:9px">· 22/11/2026</span><div class="muted" style="margin-top:4px">Equilibrado e cremoso, perfeito pro fim de tarde.</div></div>
+          <div class="review"><b>João P.</b> <span class="stars" style="font-size:10px">★★★★☆</span> <span class="muted" style="font-size:9px">· 18/11/2026</span><div class="muted" style="margin-top:4px">Gostei, mas pediria menos doce.</div></div>
+          <div class="muted" style="font-size:9px;margin-top:6px">Qualquer cliente logado pode avaliar · uma avaliação por café, editável</div>
+        </div>
+        <div class="buybar"><div><div class="muted" style="font-size:10px">Preço</div><div class="price" id="detail-price">R$ 18,90</div></div><button class="btn primary" style="flex:1">Comprar agora</button></div>
+      </div></div>
+      <figcaption><b>Detalhes do café</b><span><span class="tag atual">Atual</span> + <span class="tag plan">005</span> Grão com o saco, índices em grãos (com meio grão), P/M/G com ml e preço, e avaliações. <b>Toque nos tamanhos.</b></span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="topbar"><div class="icon">‹</div><b>Favoritos</b><div class="icon" data-open-cart>🛍</div></div>
+        <div class="scroll" style="padding:0 18px">
+          <div id="favlist"></div>
+          <div class="muted" style="text-align:center;font-size:10px;margin-top:14px">Salvos na conta, no servidor: aparecem em qualquer aparelho</div>
+        </div>
+        <div class="navbar"><span>⌂</span><span class="on">♥</span><span>🛍</span><span>🔔</span></div>
+      </div></div>
+      <figcaption><b>Caixa de favoritos</b><span><span class="tag plan">005</span> Atualiza ao favoritar na Home ou nos Detalhes.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== 3. COMPRA ===================== -->
+<section class="group">
+  <h2>3 · Carrinho e pagamento</h2>
+  <p>Tela completa do pedido, formas de pagamento simuladas e o fluxo pendente → aprovado / recusado / estornado. <b>Interativo:</b> escolha a forma e clique em "Simular" para ver cada resultado.</p>
+  <div class="row">
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="topbar"><div class="icon">‹</div><b>Pedido</b><span style="width:36px"></span></div>
+        <div class="scroll" style="padding:0 18px 12px">
+          <div class="seg"><span class="on">Entregar</span><span>Retirar</span></div>
+          <div class="title" style="font-size:13px">Endereço de entrega</div>
+          <div style="margin:6px 0"><b>Quadra 104 Norte</b><div class="muted" style="font-size:11px">Av. LO 2, Plano Diretor Norte, Palmas-TO</div></div>
+          <span class="chip">✎ Editar endereço</span><span class="chip">🗺 Escolher no mapa</span>
+          <div class="divider"></div>
+          <div id="order-items"></div>
+          <div class="card" style="display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border)"><span>🏷 1 desconto aplicado</span><span>›</span></div>
+          <div class="title" style="font-size:13px;margin-top:12px">Resumo</div>
+          <div class="sum-row"><span>Subtotal</span><b id="sub">R$ 0,00</b></div>
+          <div class="sum-row"><span>Entrega</span><span><s class="muted">R$ 6,00</s> <b>R$ 3,00</b></span></div>
+          <div class="sum-row" style="font-size:13px"><b>Total</b><b class="price" id="tot">R$ 0,00</b></div>
+          <div class="muted" style="font-size:9px">Valores recalculados pelo servidor a cada mudança</div>
+          <div class="title" style="font-size:13px;margin-top:12px">Pagamento</div>
+          <div id="pays"></div>
+        </div>
+        <div class="buybar" style="flex-direction:column;gap:8px">
+          <div style="display:flex;gap:6px;width:100%;font-size:10px">
+            <button class="chip" data-sim="approved" style="flex:1">✅ Aprova</button>
+            <button class="chip" data-sim="declined" style="flex:1">❌ Recusa</button>
+            <button class="chip" data-sim="refunded" style="flex:1">↩ Estorno</button>
+          </div>
+          <button class="btn primary" data-sim="random">Fazer pedido (aleatório · 80% aprova)</button>
+        </div>
+      </div></div>
+      <figcaption><b>Pedido completo</b><span><span class="tag atual">Atual</span> + <span class="tag plan">006</span> Pix, crédito, débito e dinheiro. Na demo, alguns produtos sempre aprovam e outros sempre recusam.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen" id="result"><div class="notch"></div>
+        <div class="state" id="result-body"></div>
+      </div></div>
+      <figcaption><b>Resultado do pagamento</b><span><span class="tag plan">003</span> <span class="tag plan">006</span> Processando → café subindo com ✓ (aprovado) ou fumaça vermelha (recusado/estornado). Use os botões da tela ao lado.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== 4. ENTREGA ===================== -->
+<section class="group">
+  <h2>4 · Entrega</h2>
+  <p>Mapa desenhado pelo próprio app (sem serviço externo) com a loja na Praça dos Girassóis. Serve para acompanhar a entrega e para escolher o endereço. O carrinho lateral não aparece aqui.</p>
+  <div class="row">
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="map">
+          <svg viewBox="0 0 280 600" preserveAspectRatio="xMidYMid slice" aria-label="Mapa esquemático de Palmas">
+            <defs><pattern id="q" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="none" stroke="currentColor" stroke-opacity=".08"/></pattern></defs>
+            <rect width="280" height="600" fill="url(#q)" style="color:var(--textPrimary)"/>
+            <rect x="0" y="0" width="34" height="600" fill="#9CC7DE" opacity=".55"/>
+            <text x="6" y="300" font-size="9" fill="#3D6E86" transform="rotate(-90 12 300)">Lago de Palmas</text>
+            <line x1="40" y1="300" x2="280" y2="300" stroke="#fff" stroke-width="10"/><line x1="40" y1="300" x2="280" y2="300" stroke="#E2C88F" stroke-width="5"/>
+            <text x="200" y="292" font-size="8" fill="#8a7a5c">Av. JK</text>
+            <line x1="150" y1="0" x2="150" y2="600" stroke="#fff" stroke-width="10"/><line x1="150" y1="0" x2="150" y2="600" stroke="#E2C88F" stroke-width="5"/>
+            <text x="156" y="560" font-size="8" fill="#8a7a5c">Av. Teotônio Segurado</text>
+            <line x1="40" y1="160" x2="280" y2="160" stroke="#fff" stroke-width="5"/><line x1="40" y1="440" x2="280" y2="440" stroke="#fff" stroke-width="5"/>
+            <line x1="80" y1="0" x2="80" y2="600" stroke="#fff" stroke-width="5"/><line x1="220" y1="0" x2="220" y2="600" stroke="#fff" stroke-width="5"/>
+            <circle cx="150" cy="300" r="38" fill="#CFE3B6" stroke="#fff" stroke-width="3"/>
+            <text x="150" y="350" font-size="8" text-anchor="middle" fill="#56703a">Praça dos Girassóis</text>
+            <path id="route" d="M150 300 L150 160 L220 160 L220 110" fill="none" stroke="var(--primary)" stroke-width="4" stroke-dasharray="7 5"/>
+            <g><circle cx="150" cy="300" r="13" fill="var(--primary)"/><text x="150" y="304" font-size="12" text-anchor="middle">☕</text></g>
+            <g><circle cx="220" cy="110" r="11" fill="#242424"/><text x="220" y="114" font-size="10" text-anchor="middle">🏠</text></g>
+            <g style="offset-path:path('M150 300 L150 160 L220 160 L220 110');animation:courier 7s linear infinite"><circle r="10" fill="#fff" stroke="var(--primary)" stroke-width="3"/><text y="4" font-size="10" text-anchor="middle">🛵</text></g>
+          </svg>
+          <div class="note">🧪 Mapa simulado (spec 007). Integração com mapa real: <b>a definir</b></div>
+          <div class="map-sheet">
+            <div style="display:flex;justify-content:space-between"><b>Faltam 8 minutos</b><span class="muted">Entrega para 104 Norte</span></div>
+            <div class="progress"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div>
+            <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
+              <div style="width:34px;height:34px;border-radius:var(--r12);background:var(--primaryContainer);display:grid;place-items:center">🛵</div>
+              <div style="flex:1"><b>Rafael Lima</b><div class="muted" style="font-size:10px">Entregador · a caminho</div></div>
+              <div class="icon">📞</div>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Mapa: acompanhar a entrega</b><span><span class="tag plan">007</span> Loja ☕ na Praça dos Girassóis, destino 🏠 e entregador 🛵 andando conforme o status.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="map">
+          <svg viewBox="0 0 280 600" preserveAspectRatio="xMidYMid slice">
+            <rect width="280" height="600" fill="url(#q)" style="color:var(--textPrimary)"/>
+            <rect x="0" y="0" width="34" height="600" fill="#9CC7DE" opacity=".55"/>
+            <line x1="40" y1="300" x2="280" y2="300" stroke="#E2C88F" stroke-width="6"/><line x1="150" y1="0" x2="150" y2="600" stroke="#E2C88F" stroke-width="6"/>
+            <line x1="40" y1="160" x2="280" y2="160" stroke="#fff" stroke-width="5"/><line x1="40" y1="440" x2="280" y2="440" stroke="#fff" stroke-width="5"/>
+            <line x1="80" y1="0" x2="80" y2="600" stroke="#fff" stroke-width="5"/><line x1="220" y1="0" x2="220" y2="600" stroke="#fff" stroke-width="5"/>
+            <circle cx="150" cy="300" r="150" fill="var(--primary)" opacity=".08" stroke="var(--primary)" stroke-dasharray="6 6"/>
+            <circle cx="150" cy="300" r="34" fill="#CFE3B6"/><circle cx="150" cy="300" r="12" fill="var(--primary)"/>
+            <g fill="#242424"><circle cx="220" cy="110" r="7"/><circle cx="80" cy="200" r="7"/><circle cx="220" cy="440" r="7"/><circle cx="110" cy="470" r="7"/></g>
+            <circle cx="220" cy="110" r="13" fill="none" stroke="var(--primary)" stroke-width="3"/>
+            <g fill="var(--danger)"><circle cx="262" cy="560" r="7"/></g>
+          </svg>
+          <div class="note">Toque num ponto de demonstração ou no mapa. Fora do círculo = fora da área.</div>
+          <div class="map-sheet">
+            <b>Quadra 104 Norte</b><div class="muted" style="font-size:10px;margin-bottom:8px">Taxa de entrega: <b>R$ 3,00</b> (validada pelo servidor)</div>
+            <div class="hint err" style="margin:0 0 8px">● vermelho: "Fora da área de entrega"</div>
+            <button class="btn primary">Usar este endereço</button>
+          </div>
+        </div>
+      </div></div>
+      <figcaption><b>Mapa: escolher o endereço</b><span><span class="tag plan">007</span> Pontos de demonstração em Palmas e área atendida; o servidor recalcula a taxa.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="topbar"><div class="icon">‹</div><b>Acompanhamento</b><div class="icon" data-open-cart>🛍</div></div>
+        <div class="scroll pad" style="padding-top:6px">
+          <div style="text-align:center"><div class="headline">10 minutos restantes</div><div class="muted">Entrega para <b style="color:var(--textPrimary)">Quadra 104 Norte</b></div></div>
+          <div class="progress" style="margin:16px 0"><i class="on"></i><i class="on"></i><i></i><i></i></div>
+          <div class="card" style="display:flex;gap:10px;border:1px solid var(--border);padding:12px">
+            <div style="font-size:22px">🛵</div><div><b>Pedido sendo preparado</b><div class="muted" style="font-size:10px">Status: preparing</div></div>
+          </div>
+          <div class="card" style="display:flex;gap:10px;align-items:center;margin-top:10px;padding:12px">
+            <div style="width:42px;height:42px;border-radius:var(--r12);background:var(--primaryContainer);display:grid;place-items:center">👤</div>
+            <div style="flex:1"><b>Rafael Lima</b><div class="muted" style="font-size:10px">Entregador</div></div><div class="icon">📞</div>
+          </div>
+          <button class="btn outline" style="margin-top:14px">🗺 Ver no mapa</button>
+          <button class="btn ghost" style="margin-top:4px">Atualizar status (demo)</button>
+          <div class="muted" style="font-size:9px;text-align:center">Na versão planejada, avançar o status vira uma operação explícita (o GET deixa de alterar o pedido)</div>
+        </div>
+      </div></div>
+      <figcaption><b>Acompanhamento</b><span><span class="tag atual">Atual</span> + <span class="tag plan">002</span> Barra de 4 etapas e card do entregador, com endereço em Palmas.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ===================== 5. TELAS DE ESTADO ===================== -->
+<section class="group">
+  <h2>5 · Telas de estado</h2>
+  <p>Cada animação é um recurso separado e identificado pelo nome (etiqueta tracejada), para ser trocado no futuro sem mexer nas telas.</p>
+  <div class="row">
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="state">
+          <svg width="160" height="130" viewBox="0 0 160 130" aria-label="Café derramado">
+            <ellipse class="puddle" cx="92" cy="108" rx="58" ry="12" fill="#7A4527"/>
+            <g transform="rotate(-100 60 70)"><path d="M30 48 h60 v30 a26 26 0 0 1 -26 26 h-8 a26 26 0 0 1 -26 -26z" fill="var(--primaryContainer)" stroke="var(--primary)" stroke-width="3"/>
+            <path d="M90 56 h6 a10 10 0 0 1 0 20 h-6" fill="none" stroke="var(--primary)" stroke-width="5"/></g>
+            <circle cx="132" cy="96" r="4" fill="#7A4527"/><circle cx="142" cy="104" r="3" fill="#7A4527"/>
+          </svg>
+          <h3>Algo deu errado</h3><p>Derramamos o café por aqui. Tente de novo em instantes.</p>
+          <button class="btn primary" style="width:auto;padding:12px 28px">Tentar novamente</button>
+          <span class="anim-id">coffee_spilled</span>
+        </div>
+      </div></div>
+      <figcaption><b>Erro inesperado</b><span><span class="tag plan">003</span> Café derramado.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="state">
+          <svg width="130" height="130" viewBox="0 0 130 130" aria-label="Copo vazio">
+            <path d="M30 30 h70 l-8 84 a8 8 0 0 1 -8 7 h-38 a8 8 0 0 1 -8 -7z" fill="none" stroke="var(--textSecondary)" stroke-width="4" stroke-dasharray="2 0"/>
+            <path d="M26 30 h78" stroke="var(--textSecondary)" stroke-width="6" stroke-linecap="round"/>
+            <path d="M44 104 q21 6 42 0" stroke="var(--border)" stroke-width="4" fill="none"/>
+            <text x="65" y="78" font-size="26" text-anchor="middle" fill="var(--textSecondary)">?</text>
+          </svg>
+          <h3>Este café está indisponível</h3><p>Ele saiu do cardápio ou não existe mais.<br><span style="font-size:10px">Mesma arte para "Esta página não existe".</span></p>
+          <button class="btn primary" style="width:auto;padding:12px 28px">Voltar ao cardápio</button>
+          <span class="anim-id">cup_empty</span>
+        </div>
+      </div></div>
+      <figcaption><b>Não encontrado / indisponível</b><span><span class="tag plan">003</span> Copo vazio. Evitamos "fora de safra" para não confundir.</span></figcaption>
+    </figure>
+
+    <figure>
+      <div class="phone"><div class="screen"><div class="notch"></div>
+        <div class="state" style="background:#141110;color:#F5EDE8">
+          <svg width="170" height="170" viewBox="0 0 170 170" aria-label="Letreiro com xícara desligada caindo">
+            <line x1="40" y1="0" x2="40" y2="22" stroke="#555" stroke-width="2"/><line x1="130" y1="0" x2="130" y2="22" stroke="#555" stroke-width="2"/>
+            <rect x="20" y="22" width="130" height="40" rx="8" fill="#211C19" stroke="#3D342E" stroke-width="3"/>
+            <text x="85" y="49" font-size="17" text-anchor="middle" fill="#C67C4E" class="neon" font-weight="700">CAFÉ</text>
+            <g class="falling">
+              <path d="M62 70 h44 v20 a18 18 0 0 1 -18 18 h-8 a18 18 0 0 1 -18 -18z" fill="none" stroke="#6E625B" stroke-width="4"/>
+              <path d="M106 76 h5 a8 8 0 0 1 0 16 h-5" fill="none" stroke="#6E625B" stroke-width="4"/>
+              <path d="M76 64 q-4 -6 0 -10 M90 64 q-4 -6 0 -10" stroke="#3D342E" stroke-width="3" fill="none"/>
+            </g>
+            <line x1="20" y1="160" x2="150" y2="160" stroke="#3D342E" stroke-width="3"/>
+          </svg>
+          <h3 style="color:#F5EDE8">Estamos fora do ar</h3><p style="color:#A89C94">Nosso servidor desligou. Tente novamente em instantes.</p>
+          <button class="btn primary" style="width:auto;padding:12px 28px">Tentar novamente</button>
+          <span class="anim-id" style="border-color:#3D342E;color:#A89C94">server_down</span>
+        </div>
+      </div></div>
+      <figcaption><b>Sistema fora do ar</b><span><span class="tag plan">002</span> <span class="tag plan">003</span> A xícara desligada cai do letreiro. Aparece em qualquer tela quando o servidor cai.</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<footer>
+  <b>Sobre esta prévia.</b> Ela é só ilustrativa e fica fora do repositório, sem relação com commits, skills ou specs.
+  Os índices, os preços em R$ e os nomes de demonstração (usuário <code>bruno.palmas</code>, entregador Rafael Lima, endereços em Palmas)
+  são exemplos para visualizar as specs; os valores reais virão do seed do servidor (spec 002).
+  As artes e animações são simples e originais, feitas em SVG e CSS, e podem ser trocadas depois.
+  Ative "reduzir movimento" no sistema para ver a versão estática.
+</footer>
+
+<script>
+  // ===== Dados de demonstração (ilustrativos, em R$) =====
+  const products = [
+    {id:'mocha', name:'Caffe Mocha', sub:'Deep Foam', m:18.90, cls:'', fav:true},
+    {id:'flat', name:'Flat White', sub:'Espresso', m:14.90, cls:'c2', fav:false},
+    {id:'fusi', name:'Mocha Fusi', sub:'Ice/Hot', m:24.90, cls:'c3', fav:true},
+    {id:'panna', name:'Caffe Panna', sub:'Ice/Hot', m:19.90, cls:'c4', fav:false},
+  ];
+  const cart = [{id:'mocha', size:'M', qty:1},{id:'fusi', size:'G', qty:1}];
+  const sizes = [{c:'P', ml:150, d:-2}, {c:'M', ml:250, d:0}, {c:'G', ml:350, d:4}];
+  const brl = v => 'R$ ' + v.toFixed(2).replace('.', ',');
+  const priceOf = (p, s) => p.m + sizes.find(x => x.c === s).d;
+  const byId = id => products.find(p => p.id === id);
+
+  // ===== Grão SVG para os índices =====
+  const beanColors = ['#E9DDD2', '#5A3420'];
+  function bean(fill) { // fill: 0 | 0.5 | 1
+    const id = 'b' + Math.random().toString(36).slice(2, 8);
+    const stop = fill === 1 ? 100 : fill === 0.5 ? 50 : 0;
+    return `<svg class="bean" viewBox="0 0 16 20"><defs><linearGradient id="${id}">
+      <stop offset="${stop}%" stop-color="${beanColors[1]}"/><stop offset="${stop}%" stop-color="${beanColors[0]}"/></linearGradient></defs>
+      <ellipse cx="8" cy="10" rx="6.5" ry="9" fill="url(#${id})" stroke="#8B5E3C" stroke-width=".8"/>
+      <path d="M8 2 q-3 8 0 16" stroke="${fill === 1 ? '#C9A27E' : '#B98A5E'}" stroke-width="1.2" fill="none"/></svg>`;
+  }
+  function scale(v) { let h = ''; for (let i = 1; i <= 5; i++) h += bean(v >= i ? 1 : v >= i - 0.5 ? 0.5 : 0); return h; }
+  document.getElementById('indices').innerHTML = [['Amargor', 3.5], ['Doçura', 2], ['Acidez', 1], ['Corpo', 4.5]]
+    .map(([l, v]) => `<div class="idx"><span class="lab">${l}</span><span>${scale(v)}</span><span class="muted" style="width:26px;text-align:right">${String(v).replace('.', ',')}</span></div>`).join('');
+
+  // ===== Home: grade de produtos =====
+  function renderGrid() {
+    document.getElementById('grid').innerHTML = products.map(p => `
+      <div class="pcard"><div class="coffee ${p.cls}"></div><span class="rating">★ 4,8</span>
+        <span class="fav" data-fav="${p.id}">${p.fav ? '❤️' : '🤍'}</span>
+        <div class="n">${p.name}</div><div class="muted" style="font-size:10px;margin:0 2px">${p.sub}</div>
+        <div class="bottom"><b>${brl(p.m)}</b><button class="plus" data-add="${p.id}">+</button></div></div>`).join('');
+  }
+
+  // ===== Favoritos =====
+  function renderFavs() {
+    const f = products.filter(p => p.fav);
+    document.getElementById('favlist').innerHTML = f.length ? f.map(p => `
+      <div class="citem"><div class="coffee ${p.cls}"></div><div><b>${p.name}</b><div class="muted" style="font-size:10px">${p.sub} · ${brl(p.m)}</div></div>
+      <span style="margin-left:auto;cursor:pointer" data-fav="${p.id}">❤️</span></div>`).join('')
+      : `<div class="state" style="padding:60px 10px"><div style="font-size:34px">🤍</div><h3>Nenhum favorito</h3><p>Explore o cardápio e toque no coração.</p></div>`;
+  }
+
+  // ===== Carrinho (drawer + pedido) =====
+  function cartHtml() {
+    const items = cart.map((c, i) => { const p = byId(c.id); return `
+      <div class="citem"><div class="coffee ${p.cls}"></div><div><b>${p.name}</b><div class="muted" style="font-size:10px">${c.size} · ${sizes.find(s => s.c === c.size).ml} ml · ${brl(priceOf(p, c.size))}</div></div>
+      <div class="stepper"><button data-q="${i}" data-d="-1">−</button><b>${c.qty}</b><button data-q="${i}" data-d="1">+</button></div></div>`; }).join('');
+    return items || `<div class="state" style="padding:40px 10px"><div style="font-size:30px">🛍</div><h3>Carrinho vazio</h3><p>Adicione um café na Home.</p></div>`;
+  }
+  const subtotal = () => cart.reduce((s, c) => s + priceOf(byId(c.id), c.size) * c.qty, 0);
+  function renderCart() {
+    const sub = subtotal();
+    document.getElementById('drawer-home').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><b class="title">Seu carrinho</b><span style="cursor:pointer" data-close-cart>✕</span></div>
+      <div class="scroll">${cartHtml()}</div>
+      <div class="sum-row" style="margin:10px 0"><span>Subtotal</span><b class="price">${brl(sub)}</b></div>
+      <button class="btn primary">Ver carrinho completo</button>
+      <div class="muted" style="font-size:9px;text-align:center;margin-top:6px">Painel lateral · não aparece no mapa</div>`;
+    document.getElementById('order-items').innerHTML = cartHtml();
+    document.getElementById('sub').textContent = brl(sub);
+    document.getElementById('tot').textContent = brl(sub + (cart.length ? 3 : 0));
+    document.querySelectorAll('[data-cart-count]').forEach(e => e.textContent = cart.reduce((s, c) => s + c.qty, 0));
+  }
+
+  // ===== Detalhes: tamanhos =====
+  let curSize = 'M';
+  function renderSizes() {
+    const p = products[0];
+    document.getElementById('sizes').innerHTML = sizes.map(s => `
+      <div class="size ${s.c === curSize ? 'on' : ''}" data-size="${s.c}"><b>${s.c}</b><small>${s.ml} ml</small></div>`).join('');
+    document.getElementById('detail-price').textContent = brl(priceOf(p, curSize));
+  }
+
+  // ===== Pagamento =====
+  const payments = [['pix', 'Pix', 'Código copia e cola simulado'], ['credit', 'Cartão de crédito', '•••• 4242 (demo)'], ['debit', 'Cartão de débito', '•••• 0005 (demo)'], ['cash', 'Dinheiro na entrega', 'Troco para… (opcional)']];
+  let curPay = 'pix';
+  function renderPays() {
+    document.getElementById('pays').innerHTML = payments.map(([k, n, d]) => `
+      <div class="pay ${k === curPay ? 'on' : ''}" data-pay="${k}"><span class="dot"></span><div><b>${n}</b><div class="muted" style="font-size:10px">${d}</div></div></div>`).join('');
+  }
+  const R = document.getElementById('result-body');
+  const results = {
+    idle: `<div style="font-size:40px">💳</div><h3>Aguardando pedido</h3><p>Use os botões da tela "Pedido" ao lado para simular um resultado.</p>`,
+    pending: `<div class="spinner"></div><h3>Processando pagamento</h3><p>Aguardando a resposta do banco simulado…</p><span class="anim-id">pagamento: pending</span>`,
+    approved: `<svg width="140" height="150" viewBox="0 0 140 150" aria-label="Café subindo">
+        <clipPath id="cup"><path d="M25 30 h90 v60 a40 40 0 0 1 -40 40 h-10 a40 40 0 0 1 -40 -40z"/></clipPath>
+        <g clip-path="url(#cup)"><rect class="fill" x="20" y="30" width="100" height="110" fill="#7A4527"/></g>
+        <path d="M25 30 h90 v60 a40 40 0 0 1 -40 40 h-10 a40 40 0 0 1 -40 -40z" fill="none" stroke="var(--primary)" stroke-width="4"/>
+        <g class="check"><circle cx="105" cy="34" r="20" fill="var(--success)"/><path d="M95 34 l7 7 l13 -14" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/></g></svg>
+      <h3>Pagamento confirmado</h3><p>Seu pedido foi aprovado pelo banco e já está sendo preparado.</p>
+      <button class="btn primary" style="width:auto;padding:12px 26px">Acompanhar pedido</button><span class="anim-id">payment_success</span>`,
+    declined: `<svg width="140" height="150" viewBox="0 0 140 150" aria-label="Fumaça vermelha">
+        <g class="smoke" fill="var(--danger)" opacity=".7"><circle cx="58" cy="80" r="18"/><circle cx="80" cy="76" r="22"/><circle cx="68" cy="86" r="16"/><circle cx="88" cy="88" r="14"/></g>
+        <path d="M30 100 h80 v8 a30 30 0 0 1 -30 30 h-20 a30 30 0 0 1 -30 -30z" fill="var(--primaryContainer)" stroke="var(--danger)" stroke-width="3"/></svg>
+      <h3>Não foi possível realizar a transação</h3><p>O banco recusou o pagamento. Nenhum valor foi cobrado e o carrinho foi mantido.</p>
+      <button class="btn primary" style="width:auto;padding:12px 26px">Tentar outra forma</button><span class="anim-id">payment_failure</span>`,
+    refunded: `<svg width="140" height="150" viewBox="0 0 140 150">
+        <g class="smoke" fill="var(--danger)" opacity=".7"><circle cx="58" cy="80" r="18"/><circle cx="80" cy="76" r="22"/><circle cx="68" cy="86" r="16"/><circle cx="88" cy="88" r="14"/></g>
+        <path d="M30 100 h80 v8 a30 30 0 0 1 -30 30 h-20 a30 30 0 0 1 -30 -30z" fill="var(--primaryContainer)" stroke="var(--danger)" stroke-width="3"/>
+        <text x="70" y="126" font-size="18" text-anchor="middle">↩</text></svg>
+      <h3>Não foi possível concluir o pedido</h3><p>O banco aprovou, mas algo falhou depois. <b>O valor foi estornado</b> automaticamente.</p>
+      <button class="btn outline" style="width:auto;padding:12px 26px">Voltar ao carrinho</button><span class="anim-id">payment_failure · refunded</span>`,
+  };
+  R.innerHTML = results.idle;
+  let timer;
+  function simulate(kind) {
+    if (kind === 'random') kind = Math.random() < 0.8 ? 'approved' : 'declined';
+    if (curPay === 'cash' && kind !== 'refunded') kind = 'approved'; // dinheiro: sem etapa de banco
+    R.innerHTML = results.pending; clearTimeout(timer);
+    timer = setTimeout(() => { R.innerHTML = results[kind]; }, 1400);
+    document.getElementById('result').scrollIntoView({behavior: 'smooth', block: 'center'});
+  }
+
+  // ===== Eventos =====
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-add],[data-fav],[data-q],[data-size],[data-pay],[data-sim],[data-open-cart],[data-close-cart]');
+    if (!t) return;
+    const home = document.getElementById('home');
+    if (t.dataset.add) { const c = cart.find(c => c.id === t.dataset.add && c.size === 'M'); c ? c.qty++ : cart.push({id: t.dataset.add, size: 'M', qty: 1}); renderCart(); t.textContent = '✓'; setTimeout(() => t.textContent = '+', 700); }
+    if (t.dataset.fav) { const p = byId(t.dataset.fav); p.fav = !p.fav; renderGrid(); renderFavs(); }
+    if (t.dataset.q !== undefined) { const c = cart[+t.dataset.q]; c.qty += +t.dataset.d; if (c.qty <= 0) cart.splice(+t.dataset.q, 1); renderCart(); }
+    if (t.dataset.size) { curSize = t.dataset.size; renderSizes(); }
+    if (t.dataset.pay) { curPay = t.dataset.pay; renderPays(); }
+    if (t.dataset.sim) simulate(t.dataset.sim);
+    if (t.hasAttribute('data-open-cart')) { home.classList.add('cart-open'); if (!home.contains(t)) home.scrollIntoView({behavior: 'smooth', block: 'center'}); }
+    if (t.hasAttribute('data-close-cart')) home.classList.remove('cart-open');
+  });
+  document.getElementById('detail-fav').addEventListener('click', e => { const p = products[0]; p.fav = !p.fav; e.currentTarget.textContent = p.fav ? '♥' : '♡'; renderGrid(); renderFavs(); });
+  document.getElementById('theme').addEventListener('click', e => { const d = document.body.classList.toggle('dark'); e.currentTarget.textContent = d ? '☀️ Tema claro' : '🌙 Tema escuro'; });
+
+  renderGrid(); renderFavs(); renderCart(); renderSizes(); renderPays();
+  document.getElementById('detail-fav').textContent = products[0].fav ? '♥' : '♡';
+</script>
+</body>
+</html>

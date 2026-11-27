@@ -11,6 +11,14 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
 - Quando o usuário pedir para aguardar um comando, não comece o trabalho antes.
 - Toda decisão nova que mude o projeto precisa ser refletida no README.
 
+## Branches e pull requests (OBRIGATÓRIO)
+
+- Todo trabalho é feito na branch **`dev`**.
+- **Nunca** commitar, dar push ou fazer merge direto na `main`.
+- Quando o usuário pedir, abrir um **pull request `dev` → `main`** e parar aí. O merge é sempre
+  feito pelo usuário.
+- Antes de começar, confira se a branch atual é `dev` (`git status -sb`).
+
 ## Contexto
 
 - Este repositório (**Coffee-Shop-Implementado**) é a implementação completa: app em `lib/`,
@@ -19,14 +27,16 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
   System. O app **não** busca o DS de lá, e a cópia não se atualiza sozinha.
 - Histórico e decisões: rode **`/linha-do-tempo`**. Para registrar um passo novo, rode
   `/linha-do-tempo adicionar: <o que aconteceu>`.
+- Prévia visual do app planejado (não implementada): **`/visual-nao-implementado-01`**.
 
 ## Spec-kit
 
 - Constitution: `.specify/memory/constitution.md`. Ela prevalece sobre preferências e deve ser
   checada em todo plano.
 - Specs em `specs/`, numeradas **na ordem de implementação**:
-  001 contrato da API → 002 servidor mock → 003 telas de estado → 004 autenticação →
-  005 catálogo → 006 carrinho e pagamento → 007 mapa → 008 esteira de testes.
+  001 contrato da API → 002 servidor mock → 003 telas de estado (visual) →
+  004 inter telas (onde e quando aparecem) → 005 autenticação → 006 catálogo →
+  007 carrinho e pagamento → 008 mapa → 009 esteira de testes.
 - Feature ativa: `.specify/feature.json`. Esse arquivo fica **fora do git** (padrão do
   spec-kit, porque vale só para a máquina). Numa máquina nova, crie-o com
   `{ "feature_directory": "specs/<pasta-da-feature>" }`, usando a próxima feature não

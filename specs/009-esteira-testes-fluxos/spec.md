@@ -1,10 +1,10 @@
 # Feature Specification: Esteira de Testes dos Fluxos do Protótipo
 
-**Feature Branch**: `008-esteira-testes-fluxos` (sem branch git; diretório `specs/008-esteira-testes-fluxos`)
+**Feature Branch**: `009-esteira-testes-fluxos` (sem branch git; diretório `specs/009-esteira-testes-fluxos`)
 
 **Created**: 2026-11-27
 
-**Status**: Draft (planejada para depois das features 002–007)
+**Status**: Draft (planejada para depois das features 002–008)
 
 **Input**: User description: "Marque para depois uma esteira de testes para testar os fluxos do
 protótipo."
@@ -76,6 +76,6 @@ ou reprovado.
 
 ## Assumptions
 
-- Depende das features 002 a 007; seu `/speckit-plan` só deve ser executado depois delas.
+- Depende das features 002 a 008; seu `/speckit-plan` só deve ser executado depois delas.
 - Os testes de ViewModel e de contrato continuam sendo entregues por cada feature (constitution,
   princípio IX); esta esteira os integra e acrescenta os testes de ponta a ponta.

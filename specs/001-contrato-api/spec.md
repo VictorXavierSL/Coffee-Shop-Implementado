@@ -11,11 +11,12 @@ no README. Use como base o que já temos."
 
 > **Ordem recomendada:** pelo princípio VI da constitution (contrato de API primeiro), esta
 > feature deve ser planejada e entregue **antes** da implementação da 002 e das features
-> 003–007, que vão implementar as rotas definidas aqui.
+> 003–008, que vão implementar as rotas definidas aqui.
 >
 > **Ordem de implementação das specs:** 001 contrato da API → 002 servidor mock →
-> 003 telas de estado → 004 autenticação → 005 catálogo → 006 carrinho e pagamento →
-> 007 mapa de entrega → 008 esteira de testes.
+> 003 telas de estado → 004 inter telas (loading e erros previstos) → 005 autenticação →
+> 006 catálogo → 007 carrinho e pagamento →
+> 008 mapa de entrega → 009 esteira de testes.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -50,7 +51,7 @@ O servidor mock (feature 002), o simulador em memória dos testes e o app seguem
 documento, e uma verificação automática acusa qualquer divergência.
 
 **Why this priority**: sem contrato único, servidor, simulador e app divergem, e as features
-003–007 não conseguem ser feitas em paralelo.
+003–008 não conseguem ser feitas em paralelo.
 
 **Independent Test**: alterar de propósito a resposta de uma rota no simulador e ver a
 verificação de contrato falhar, apontando a rota.
@@ -68,7 +69,7 @@ verificação de contrato falhar, apontando a rota.
 
 ### User Story 3 - Contrato completo para as features do protótipo (Priority: P1)
 
-O contrato cobre, além das rotas atuais, tudo o que as features 002–007 precisam: cadastro,
+O contrato cobre, além das rotas atuais, tudo o que as features 002–008 precisam: cadastro,
 login por e-mail ou usuário, Google/Apple simulado, confirmação de e-mail, foto de perfil,
 grão e índices, tamanhos com ml, avaliações, favoritos, indicação do dia, carrinho, pagamento
 com idempotência e estorno, mapa e pontos de entrega, avanço de status e verificação de saúde
@@ -76,12 +77,12 @@ do servidor.
 
 **Why this priority**: o contrato vem antes da implementação (constitution, princípio VI).
 
-**Independent Test**: para cada requisito funcional das specs 002–007 que envolve dados,
+**Independent Test**: para cada requisito funcional das specs 002–008 que envolve dados,
 encontrar a rota correspondente no contrato.
 
 **Acceptance Scenarios**:
 
-1. **Given** as specs 002–007, **When** cada requisito de dados é cruzado com o contrato,
+1. **Given** as specs 002–008, **When** cada requisito de dados é cruzado com o contrato,
    **Then** 100% têm rota correspondente.
 2. **Given** uma rota simulada (Google/Apple, e-mail, pagamento, mapa), **When** a pessoa lê o
    detalhe, **Then** vê a marcação "Simulado", o comportamento e o link para
@@ -131,20 +132,20 @@ continua funcionando, que a versão sobe como compatível e que o histórico reg
 - **FR-004**: O contrato MUST preservar as 10 rotas atuais e o envelope de erro
   `{ "error": { "code", "message" } }`; qualquer mudança incompatível nelas MUST ser listada no
   histórico de mudanças.
-- **FR-005**: O contrato MUST cobrir as capacidades das features 002–007:
-  - **Autenticação e conta (004):** cadastro; login por e-mail **ou** nome de usuário;
+- **FR-005**: O contrato MUST cobrir as capacidades das features 002–008:
+  - **Autenticação e conta (005):** cadastro; login por e-mail **ou** nome de usuário;
     login Google/Apple simulado; confirmação de e-mail simulada; perfil; envio, troca e
     remoção da foto de perfil; logout; bloqueio por tentativas (erro próprio com tempo
     restante).
-  - **Catálogo (005):** categorias; produtos com grão (nome, origem, ilustração), perfil
+  - **Catálogo (006):** categorias; produtos com grão (nome, origem, ilustração), perfil
     sensorial (amargor, doçura, acidez e corpo, de 0 a 5 em passos de 0,5) e tamanhos com
     volume em ml e preço; promoções; avaliações paginadas com média e total; criar ou
     substituir a própria avaliação; favoritos (listar, adicionar, remover); indicação do dia
     com motivo.
-  - **Carrinho e pagamento (006):** carrinho do cliente (ver, adicionar, alterar e remover
+  - **Carrinho e pagamento (007):** carrinho do cliente (ver, adicionar, alterar e remover
     itens); cotação; criar pedido; formas de pagamento; tentativa de pagamento com chave de
     idempotência e estados pendente/aprovado/recusado/estornado; consulta da tentativa.
-  - **Entrega e mapa (007):** dados da loja; pontos de entrega de demonstração; validação de
+  - **Entrega e mapa (008):** dados da loja; pontos de entrega de demonstração; validação de
     endereço/área com taxa; rastreio do pedido (posição do entregador, trajeto, tempo
     estimado).
   - **Servidor (002):** verificação de saúde (usada para o aviso de fora do ar); operação
@@ -188,13 +189,13 @@ continua funcionando, que a versão sobe como compatível e que o histórico reg
   5 minutos.
 - **SC-002**: 100% das rotas usadas pelo app estão no contrato, e 100% das rotas do contrato
   passam na verificação contra o servidor e o simulador.
-- **SC-003**: 100% dos requisitos de dados das specs 002–007 têm rota correspondente.
+- **SC-003**: 100% dos requisitos de dados das specs 002–008 têm rota correspondente.
 - **SC-004**: Toda alteração de contrato aparece no histórico com versão e data.
 - **SC-005**: 0 rotas de leitura alteram estado.
 
 ## Assumptions
 
-- Base: o `docs/API.md` atual (10 rotas, envelope de erro, exemplos) e as specs 002–007.
+- Base: o `docs/API.md` atual (10 rotas, envelope de erro, exemplos) e as specs 002–008.
 - O formato legível por máquina adotado será OpenAPI 3, a confirmar no `/speckit-plan`.
 - O endereço base segue o já documentado, com o prefixo `/v1`; no servidor local de
   demonstração vale o mesmo prefixo.

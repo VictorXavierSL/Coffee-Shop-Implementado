@@ -16,6 +16,11 @@ está fora do ar com um símbolo de café de Java desligado caído de um letreir
 animações simples, mas deixe elas separadas e identificadas para que seja possível trocar no
 futuro."
 
+> **Divisão com a spec 004** (decisão do usuário em 2026-11-27): esta spec define o **visual**
+> (os componentes de tela de estado e as animações substituíveis). **Onde e quando** cada inter
+> tela aparece (fluxos, códigos de erro, textos, ações e prioridade) é definido na spec **004**
+> (inter telas: loading e erros previstos). Em caso de conflito sobre quando exibir, vale a 004.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Telas de erro e de "não encontrado" (Priority: P1)
@@ -71,7 +76,7 @@ ou estornado.
 **Why this priority**: o resultado do pagamento precisa ser inequívoco.
 
 **Independent Test**: usar os produtos de demonstração "sempre aprova" e "sempre recusa"
-(feature 006) e ver cada animação.
+(feature 007) e ver cada animação.
 
 **Acceptance Scenarios**:
 
@@ -169,8 +174,8 @@ alterar nenhuma cena.
 ## Assumptions
 
 - Vem logo depois do servidor (002) porque as telas de estado são componentes do Design System
-  usados pelas features 004–007. Usa a detecção de fora do ar da 002. As telas de pagamento
-  são entregues como componentes prontos e ligadas aos resultados reais quando a 006 for
+  usados pelas features 004–008. Usa a detecção de fora do ar da 002. As telas de pagamento
+  são entregues como componentes prontos e ligadas aos resultados reais quando a 007 for
   implementada; até lá, são exercitadas com estados simulados no Sample App.
 - O componente `StateView` existente no Design System é a base a ser estendida.
 - "Café de Java desligado" foi interpretado como uma xícara de café estilizada, apagada, caindo
