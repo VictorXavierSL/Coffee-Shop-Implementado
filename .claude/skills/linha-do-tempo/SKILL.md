@@ -137,6 +137,12 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 - Ficam fora do git, de propósito: `.claude/settings.local.json` (permissões) e
   `.specify/feature.json` (feature ativa, recriada em cada máquina).
 
+### 2026-11-27 — 15. Branch `dev` e regra de pull request
+- Criada a branch **`dev`** a partir da `main` (`0c31b7e`) e enviada ao GitHub.
+- Regra nova: todo trabalho acontece na `dev`; **nunca** commitar ou fazer merge direto na
+  `main`; quando o usuário pedir, abrir um pull request `dev` → `main`, e o merge fica com ele.
+  Registrada no `CLAUDE.md`.
+
 ---
 
 ## Decisões vigentes
@@ -144,6 +150,7 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 | Tema | Decisão |
 |---|---|
 | Fonte de verdade | README.md; divergência ou dúvida importante → perguntar |
+| Branches | Trabalho na `dev`; para a `main` só por PR, e o merge é do usuário |
 | Repositórios | Coffee-Shop-Implementado = app completo; Designer-Systen-… = cópia só do DS |
 | Backend | Servidor mock separado, Dart (shelf) + Postgres (Docker Compose), com seed |
 | Mock em memória | `MockApiClient` só para testes |

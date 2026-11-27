@@ -11,6 +11,14 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
 - Quando o usuário pedir para aguardar um comando, não comece o trabalho antes.
 - Toda decisão nova que mude o projeto precisa ser refletida no README.
 
+## Branches e pull requests (OBRIGATÓRIO)
+
+- Todo trabalho é feito na branch **`dev`**.
+- **Nunca** commitar, dar push ou fazer merge direto na `main`.
+- Quando o usuário pedir, abrir um **pull request `dev` → `main`** e parar aí. O merge é sempre
+  feito pelo usuário.
+- Antes de começar, confira se a branch atual é `dev` (`git status -sb`).
+
 ## Contexto
 
 - Este repositório (**Coffee-Shop-Implementado**) é a implementação completa: app em `lib/`,
