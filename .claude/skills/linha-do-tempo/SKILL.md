@@ -162,6 +162,12 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 - A prévia `visual-nao-implementado-01` não foi alterada: as etiquetas dentro dela seguem a
   numeração antiga (a conversão está no `SKILL.md` dela).
 
+### 2026-11-27 — 18. Pull request pendente e troca de máquina
+- O usuário pediu o PR `dev` → `main`. O `gh` 2.106.0 foi instalado (winget) nesta máquina,
+  mas falta o login (`gh auth login`), então o **PR ainda não foi aberto**.
+- Na `dev`, à frente da `main`: `a22a996`, `422ab54`, `af02628` e este registro.
+- O usuário encerrou a sessão para continuar em outra máquina.
+
 ---
 
 ## Decisões vigentes
@@ -207,6 +213,9 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 
 ## Estado atual (em 2026-11-27)
 
+- Branch de trabalho: `dev`. **PR `dev` → `main` pendente**: abrir com
+  `gh pr create --base main --head dev` (depois de `gh auth login`) ou pelo link
+  `https://github.com/VictorXavierSL/Coffee-Shop-Implementado/compare/main...dev?expand=1`.
 - Feature ativa: `specs/001-contrato-api` (`.specify/feature.json`).
 - Nenhum código de feature foi implementado ainda.
 - Tudo commitado e enviado ao GitHub. Ficam fora do git só `.claude/settings.local.json` e
