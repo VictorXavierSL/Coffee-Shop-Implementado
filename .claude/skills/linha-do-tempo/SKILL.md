@@ -151,6 +151,17 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 - Os dados dela são ilustrativos e não são decisões. Mudanças visuais vão para uma nova versão
   (`-02`).
 
+### 2026-11-27 — 17. Spec das inter telas e renumeração
+- Nova spec **004 — Inter telas: loading e erros previstos**. Todo loading que bloqueia a tela
+  usa o café fumegante (aparece após 300 ms, fica no mínimo 600 ms, e após 15 s vira "fora do
+  ar"). Ela traz o catálogo de cada erro previsto (código do contrato → inter tela, texto,
+  ação) e a prioridade entre erros.
+- Divisão decidida pelo usuário: a **003** fica com o **visual** (componentes e animações) e a
+  **004** com o **onde e quando**.
+- A 004 entrou logo depois da 003; as antigas 004–008 viraram **005–009**.
+- A prévia `visual-nao-implementado-01` não foi alterada: as etiquetas dentro dela seguem a
+  numeração antiga (a conversão está no `SKILL.md` dela).
+
 ---
 
 ## Decisões vigentes
@@ -186,12 +197,13 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 |---|---|---|
 | 001 | `specs/001-contrato-api` | Contrato da API evidente e único |
 | 002 | `specs/002-servidor-mock-postgres` | Servidor mock separado com banco + aviso de fora do ar |
-| 003 | `specs/003-telas-estado-animacoes` | Telas de estado e animações substituíveis |
-| 004 | `specs/004-autenticacao-contas` | Login, cadastro, Google/Apple, foto, segurança |
-| 005 | `specs/005-catalogo-detalhes-produto` | Home, grão e índices, ml, avaliações, favoritos, indicação do dia |
-| 006 | `specs/006-carrinho-pagamento` | Carrinho lateral e completo, pagamento simulado com estorno |
-| 007 | `specs/007-mapa-entrega` | Mapa simulado de Palmas |
-| 008 | `specs/008-esteira-testes-fluxos` | Esteira de testes dos fluxos (planejada para depois) |
+| 003 | `specs/003-telas-estado-animacoes` | Telas de estado e animações substituíveis (o **visual**) |
+| 004 | `specs/004-inter-telas-loading-erros` | Inter telas: loading (café fumegante) e catálogo de erros previstos (**onde e quando**) |
+| 005 | `specs/005-autenticacao-contas` | Login, cadastro, Google/Apple, foto, segurança |
+| 006 | `specs/006-catalogo-detalhes-produto` | Home, grão e índices, ml, avaliações, favoritos, indicação do dia |
+| 007 | `specs/007-carrinho-pagamento` | Carrinho lateral e completo, pagamento simulado com estorno |
+| 008 | `specs/008-mapa-entrega` | Mapa simulado de Palmas |
+| 009 | `specs/009-esteira-testes-fluxos` | Esteira de testes dos fluxos (planejada para depois) |
 
 ## Estado atual (em 2026-11-27)
 
@@ -207,4 +219,4 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 
 1. `/speckit-plan` na 001 → `/speckit-tasks` → (`/speckit-analyze`) → `/speckit-implement`.
 2. Para cada feature seguinte, trocar `.specify/feature.json` e repetir o ciclo, na ordem
-   001 → 008.
+   001 → 009.

@@ -1,6 +1,6 @@
 # Feature Specification: Catálogo, Detalhes do Grão, Avaliações, Favoritos e Indicação do Dia
 
-**Feature Branch**: `005-catalogo-detalhes-produto` (sem branch git; diretório `specs/005-catalogo-detalhes-produto`)
+**Feature Branch**: `006-catalogo-detalhes-produto` (sem branch git; diretório `specs/006-catalogo-detalhes-produto`)
 
 **Created**: 2026-11-27
 
@@ -176,7 +176,7 @@ ver a indicação baseada nos pedidos; com uma conta nova, ver o mais consumido.
 
 ## Assumptions
 
-- Depende das features 002 (servidor) e 004 (conta logada).
+- Depende das features 002 (servidor) e 005 (conta logada).
 - Índices adicionais ao amargor (doçura, acidez, corpo) foram adotados a partir da ideia
   "amargura, doce e outros" do protótipo.
 - Probabilidade padrão do popup: 50% por abertura do app, no máximo uma vez por abertura.

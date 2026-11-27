@@ -34,8 +34,9 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
 - Constitution: `.specify/memory/constitution.md`. Ela prevalece sobre preferências e deve ser
   checada em todo plano.
 - Specs em `specs/`, numeradas **na ordem de implementação**:
-  001 contrato da API → 002 servidor mock → 003 telas de estado → 004 autenticação →
-  005 catálogo → 006 carrinho e pagamento → 007 mapa → 008 esteira de testes.
+  001 contrato da API → 002 servidor mock → 003 telas de estado (visual) →
+  004 inter telas (onde e quando aparecem) → 005 autenticação → 006 catálogo →
+  007 carrinho e pagamento → 008 mapa → 009 esteira de testes.
 - Feature ativa: `.specify/feature.json`. Esse arquivo fica **fora do git** (padrão do
   spec-kit, porque vale só para a máquina). Numa máquina nova, crie-o com
   `{ "feature_directory": "specs/<pasta-da-feature>" }`, usando a próxima feature não

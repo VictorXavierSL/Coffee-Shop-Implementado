@@ -1,6 +1,6 @@
 ---
 name: visual-nao-implementado-01
-description: Prévia visual nº 01 do Coffee Shop, NÃO implementada. Página HTML com as telas atuais e as planejadas nas specs 001–008. Use quando o usuário quiser ver, abrir, revisar ou comparar o visual planejado.
+description: Prévia visual nº 01 do Coffee Shop, NÃO implementada. Página HTML com as telas atuais e as planejadas nas specs 001–009. Use quando o usuário quiser ver, abrir, revisar ou comparar o visual planejado.
 argument-hint: "Vazio para abrir a prévia; ou o nome de uma tela/grupo para comentar"
 user-invocable: true
 ---
@@ -34,11 +34,17 @@ Cada tela tem a etiqueta **Atual** (já existe no código) ou **Planejado** (com
 
 | Grupo | Telas | Specs |
 |---|---|---|
-| 1 · Entrada e conta | Launch (café fumegante), Onboarding, Login (e-mail ou usuário, Google/Apple simulado), Criar conta (foto opcional, confirmação de e-mail automática) | 003, 004 |
-| 2 · Catálogo | Home com endereço em Palmas e carrinho lateral, popup da indicação do dia, Detalhes (saco de grão, índices em grãos, P/M/G com ml e R$, avaliações), Favoritos | 005, 006 |
-| 3 · Carrinho e pagamento | Pedido completo (Pix, crédito, débito, dinheiro) e Resultado (processando, aprovado, recusado, estornado) | 003, 006 |
-| 4 · Entrega | Mapa acompanhando a entrega (loja na Praça dos Girassóis), Mapa escolhendo o endereço, Acompanhamento | 002, 007 |
-| 5 · Telas de estado | Erro (café derramado), Não encontrado/indisponível (copo vazio), Fora do ar (xícara desligada caindo do letreiro) | 002, 003 |
+| 1 · Entrada e conta | Launch (café fumegante), Onboarding, Login (e-mail ou usuário, Google/Apple simulado), Criar conta (foto opcional, confirmação de e-mail automática) | 003, 005 |
+| 2 · Catálogo | Home com endereço em Palmas e carrinho lateral, popup da indicação do dia, Detalhes (saco de grão, índices em grãos, P/M/G com ml e R$, avaliações), Favoritos | 006, 007 |
+| 3 · Carrinho e pagamento | Pedido completo (Pix, crédito, débito, dinheiro) e Resultado (processando, aprovado, recusado, estornado) | 003, 007 |
+| 4 · Entrega | Mapa acompanhando a entrega (loja na Praça dos Girassóis), Mapa escolhendo o endereço, Acompanhamento | 002, 008 |
+| 5 · Telas de estado | Erro (café derramado), Não encontrado/indisponível (copo vazio), Fora do ar (xícara desligada caindo do letreiro) | 002, 003, 004 |
+
+> Numeração atualizada em 2026-11-27: a spec 004 (inter telas) foi criada e as antigas
+> 004–008 viraram 005–009. As etiquetas **dentro** do `index.html` mostram a numeração antiga
+> (002–008) e ficam assim de propósito, para a versão 01 não ser alterada. Para converter:
+> 004→005, 005→006, 006→007, 007→008. Diferença conhecida: a spec 004 define que o
+> "processando pagamento" usa o café fumegante, mas esta prévia mostra um spinner.
 
 **O que responde a cliques:** "+" adiciona ao carrinho; ♡ favorita; a sacola abre o painel
 lateral (com controle de quantidade); P/M/G troca o ml e o preço; os botões ✅ ❌ ↩ e

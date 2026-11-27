@@ -1,6 +1,6 @@
 # Feature Specification: Carrinho Lateral, Carrinho Completo e Pagamento Simulado
 
-**Feature Branch**: `006-carrinho-pagamento` (sem branch git; diretório `specs/006-carrinho-pagamento`)
+**Feature Branch**: `007-carrinho-pagamento` (sem branch git; diretório `specs/007-carrinho-pagamento`)
 
 **Created**: 2026-11-27
 
@@ -173,7 +173,7 @@ seguir as instruções de remoção para desligar a simulação.
 
 ## Assumptions
 
-- Depende das features 002 (servidor) e 004 (conta logada) e usa o catálogo da 005.
+- Depende das features 002 (servidor) e 005 (conta logada) e usa o catálogo da 006.
 - Formas de pagamento adotadas: Pix, crédito, débito e dinheiro (padrão no Brasil).
 - Tempo simulado de resposta do banco: 1 a 3 segundos; tempo limite: 15 segundos.
 - A tela completa do pedido estende a cena `order` existente (entrega/retirada, endereço,

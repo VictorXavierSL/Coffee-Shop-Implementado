@@ -1,6 +1,6 @@
 # Feature Specification: Autenticação e Criação de Conta
 
-**Feature Branch**: `004-autenticacao-contas` (sem branch git; diretório `specs/004-autenticacao-contas`)
+**Feature Branch**: `005-autenticacao-contas` (sem branch git; diretório `specs/005-autenticacao-contas`)
 
 **Created**: 2026-11-27
 

@@ -1,6 +1,6 @@
 # Feature Specification: Mapa de Entrega Simulado em Palmas-TO
 
-**Feature Branch**: `007-mapa-entrega` (sem branch git; diretório `specs/007-mapa-entrega`)
+**Feature Branch**: `008-mapa-entrega` (sem branch git; diretório `specs/008-mapa-entrega`)
 
 **Created**: 2026-11-27
 
@@ -61,7 +61,7 @@ entrega recalculada pelo servidor.
 - O mapa não carrega: o app mostra o endereço em texto e o status do pedido, sem travar.
 - Destino muito próximo da loja: o trajeto continua visível, com zoom adequado.
 - Rotação da tela e telas pequenas: loja e destino continuam visíveis.
-- O painel lateral do carrinho (feature 006) não aparece no mapa.
+- O painel lateral do carrinho (feature 007) não aparece no mapa.
 
 ## Requirements *(mandatory)*
 
@@ -107,7 +107,7 @@ entrega recalculada pelo servidor.
 
 ## Assumptions
 
-- Depende das features 002 (servidor) e 006 (pedido).
+- Depende das features 002 (servidor) e 007 (pedido).
 - "Palácio de Palmas" = Praça dos Girassóis (onde fica o Palácio Araguaia), confirmado pelo
   usuário.
 - O mapa é uma ilustração simplificada e esquemática de Palmas (avenidas principais e praça),

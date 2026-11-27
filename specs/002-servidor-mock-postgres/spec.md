@@ -146,7 +146,7 @@ usando o simulador em memória que segue o mesmo contrato.
   Palmas-TO e data de cadastro.
 - **Categoria**: agrupamento de produtos (ex.: Machiato, Latte, Americano).
 - **Produto**: café com nome, descrição, foto, categoria, tamanhos (P/M/G com volume e preço) e
-  atributos de grão (detalhados na feature 005).
+  atributos de grão (detalhados na feature 006).
 - **Promoção**: banner promocional exibido na Home.
 - **Pedido**: itens, tipo de entrega, endereço, pagamento, resumo de valores e status.
 - **Sessão**: token de acesso vinculado a um usuário, com validade.
