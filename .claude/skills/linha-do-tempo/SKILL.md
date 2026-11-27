@@ -168,6 +168,15 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 - Na `dev`, à frente da `main`: `a22a996`, `422ab54`, `af02628` e este registro.
 - O usuário encerrou a sessão para continuar em outra máquina.
 
+### 2026-11-27 — 19. Nova máquina e PR #1 mesclado
+- Repositório clonado em outra máquina (branch `dev`), com Flutter 3.47.9. As pastas de
+  plataforma (`android/`, `ios/`, `web/`) foram geradas com `flutter create`, sem ir para o git.
+- O **PR #1 `dev` → `main`** foi aberto e mesclado pelo usuário (`5a2b5b3`). A `main` agora tem
+  o mesmo conteúdo da `dev`.
+- No Flutter 3.47, `package:flutter/widgets.dart` não exporta mais `TextInputAction`. O
+  `AppTextField` precisa importar `package:flutter/services.dart`. Essa correção foi aplicada
+  só localmente e **não foi commitada**, porque o projeto está na fase de specs.
+
 ---
 
 ## Decisões vigentes
@@ -213,9 +222,7 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 
 ## Estado atual (em 2026-11-27)
 
-- Branch de trabalho: `dev`. **PR `dev` → `main` pendente**: abrir com
-  `gh pr create --base main --head dev` (depois de `gh auth login`) ou pelo link
-  `https://github.com/VictorXavierSL/Coffee-Shop-Implementado/compare/main...dev?expand=1`.
+- Branch de trabalho: `dev`. ~~PR `dev` → `main` pendente~~ → PR #1 mesclado (`5a2b5b3`).
 - Feature ativa: `specs/001-contrato-api` (`.specify/feature.json`).
 - Nenhum código de feature foi implementado ainda.
 - Tudo commitado e enviado ao GitHub. Ficam fora do git só `.claude/settings.local.json` e
