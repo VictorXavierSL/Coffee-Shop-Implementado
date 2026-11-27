@@ -143,6 +143,14 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
   `main`; quando o usuário pedir, abrir um pull request `dev` → `main`, e o merge fica com ele.
   Registrada no `CLAUDE.md`.
 
+### 2026-11-27 — 16. Prévia visual 01 (não implementada)
+- Criada uma página HTML só visual, com 16 telas (atuais + planejadas nas specs), usando os
+  tokens do Design System, preços em R$, Palmas-TO e as animações simples planejadas.
+- A pedido do usuário, ela virou a skill **`/visual-nao-implementado-01`** e foi para o git
+  (`.claude/skills/visual-nao-implementado-01/index.html`).
+- Os dados dela são ilustrativos e não são decisões. Mudanças visuais vão para uma nova versão
+  (`-02`).
+
 ---
 
 ## Decisões vigentes

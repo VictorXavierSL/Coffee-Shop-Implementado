@@ -27,6 +27,7 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
   System. O app **não** busca o DS de lá, e a cópia não se atualiza sozinha.
 - Histórico e decisões: rode **`/linha-do-tempo`**. Para registrar um passo novo, rode
   `/linha-do-tempo adicionar: <o que aconteceu>`.
+- Prévia visual do app planejado (não implementada): **`/visual-nao-implementado-01`**.
 
 ## Spec-kit
 
