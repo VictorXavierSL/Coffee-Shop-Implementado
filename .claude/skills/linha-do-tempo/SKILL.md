@@ -129,6 +129,14 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 ### 2026-11-27 — 13. Esta skill criada
 - `.claude/skills/linha-do-tempo/SKILL.md`.
 
+### 2026-11-27 — 14. Configuração portátil e commit
+- Criado o `CLAUDE.md` com as regras de trabalho, que antes estavam só na memória local do
+  Claude e não iam para outra máquina.
+- Commit `32bbfdb`, enviado ao Coffee-Shop-Implementado: spec-kit, constitution, specs,
+  `prototipo.txt`, esta skill, `CLAUDE.md` e `.gitignore`.
+- Ficam fora do git, de propósito: `.claude/settings.local.json` (permissões) e
+  `.specify/feature.json` (feature ativa, recriada em cada máquina).
+
 ---
 
 ## Decisões vigentes
@@ -174,15 +182,14 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 
 - Feature ativa: `specs/001-contrato-api` (`.specify/feature.json`).
 - Nenhum código de feature foi implementado ainda.
-- **Sem commit:** `.specify/`, `.claude/skills/`, `specs/`, `.gitignore`, `prototipo.txt`.
+- Tudo commitado e enviado ao GitHub. Ficam fora do git só `.claude/settings.local.json` e
+  `.specify/feature.json`.
 - O README ainda precisa receber as decisões novas (backend separado, login por e-mail ou
   usuário, Palmas-TO, R$, seção "Contrato da API"), o que deve acontecer na primeira feature
   implementada.
 
 ## Próximos passos
 
-1. (Opcional) Commitar e enviar a constitution, as specs e o spec-kit para o
-   Coffee-Shop-Implementado.
-2. `/speckit-plan` na 001 → `/speckit-tasks` → (`/speckit-analyze`) → `/speckit-implement`.
-3. Para cada feature seguinte, trocar `.specify/feature.json` e repetir o ciclo, na ordem
+1. `/speckit-plan` na 001 → `/speckit-tasks` → (`/speckit-analyze`) → `/speckit-implement`.
+2. Para cada feature seguinte, trocar `.specify/feature.json` e repetir o ciclo, na ordem
    001 → 008.
