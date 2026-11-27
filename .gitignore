@@ -13,3 +13,7 @@ pubspec.lock
 
 # OS
 .DS_Store
+
+# Claude Code (permissões locais) e segredos
+.claude/settings.local.json
+.env
