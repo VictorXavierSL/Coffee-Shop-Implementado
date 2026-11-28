@@ -176,6 +176,77 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 - No Flutter 3.47, `package:flutter/widgets.dart` não exporta mais `TextInputAction`. O
   `AppTextField` precisa importar `package:flutter/services.dart`. Essa correção foi aplicada
   só localmente e **não foi commitada**, porque o projeto está na fase de specs.
+- Spec-kit conferido nesta máquina: arquivos íntegros, `.specify/feature.json` recriado,
+  Python 3.13 + PyYAML instalados (só usados por presets). As skills do repositório ficam
+  visíveis na pasta-mãe `Downloads\Project` por uma junção em `.claude\skills`, fora do git.
+
+### 2026-11-27 — 20. Resultado do pagamento em tela inteira (clarify da 003) e prévia 02
+- `/speckit-clarify` na spec **003**, com nota na **004**. O resultado do pagamento ocupa a
+  **tela inteira, como se o celular fosse a xícara**:
+  - Aprovado: o café marrom sobe e enche a tela, e um "certo" branco aparece desenhado como
+    leite (latte art), com "Compra concluída!" e "Seu pagamento foi confirmado e o pedido já
+    está sendo preparado."
+  - Recusado/estornado: uma fumaça vermelha sobe e cobre a tela, com um X branco no meio.
+  - Não avança sozinho. Dois botões: aprovado = "Acompanhar pedido" + "Voltar ao cardápio";
+    recusado = "Tentar outra forma" + "Voltar ao cardápio"; estornado = "Voltar ao carrinho" +
+    "Voltar ao cardápio".
+  - Entrada e saída são **um movimento contínuo**: depois do toque, o líquido ou a fumaça
+    continua subindo e passa pela tela, com a borda de trás ondulada revelando o destino.
+- A 004 recebeu a nota e as ações novas no catálogo (FR-005), com a linha de pagamento aprovado.
+- Criada a prévia **`/visual-nao-implementado-02`** com essas telas e com o café fumegante no
+  "processando pagamento". A 01 não foi alterada.
+
+### 2026-11-27 — 21. Spec 010: cadastro de cartões
+- `/speckit-specify` criou a **010 — Cadastro de cartões de demonstração**: tela simples, nos
+  temas do app, acessada pelo pagamento ("Adicionar cartão") e pelo perfil ("Meus cartões").
+- Decisões do usuário: é **só teste**, sem confirmar o cartão (confere apenas o formato); entra
+  como **010**, depois de todas, sem renumerar.
+- Para não contrariar a 007, o cartão salvo guarda só bandeira, 4 últimos dígitos, nome e
+  validade; o CVV é pedido a cada compra. A FR-012 da 007 recebeu essa exceção.
+
+### 2026-11-27 — 22. Spec 011: sons e nova animação de erro
+- `/speckit-specify` criou a **011 — Sons das telas de animação e dos botões**: cada tela de
+  animação tem um som curto no tema de café; o fora do ar tem som de energia desligando e da
+  caneca caindo; os botões têm um clique baixo e agradável. Sons de bases gratuitas, com créditos
+  em `docs/CREDITOS.md`, opção "Sons do app" no perfil e respeito ao modo silencioso.
+- Decisões do usuário: **exceção ao princípio X** para o pacote de áudio (a justificar no
+  plano, como a foto de perfil); número **011**, depois de todas.
+- A tela "algo deu errado" passa a mostrar a **xícara caindo e derramando o café**, registrado na
+  003 (mesmo identificador `coffee_spilled`).
+
+### 2026-11-27 — 23. Tela de sem internet (clarify da 003 e da 004)
+- Nova inter tela **`no_internet`**, separada do fora do ar do servidor: uma xícara cujo vapor
+  desenha o Wi-Fi, com os arcos sumindo um a um. Texto "Sem conexão com a internet" /
+  "Verifique o Wi-Fi ou os dados móveis."
+- Quando a rede volta, o app continua sozinho: o vapor redesenha o Wi-Fi e a tela sai subindo
+  como o líquido do pagamento aprovado, revelando a tela que o cliente tentava abrir.
+- Prioridade na 004 (FR-008): **sem internet > fora do ar** > sessão expirada > … O catálogo
+  separou "aparelho sem internet" de "servidor não responde".
+- Som (011): chiado de vapor que se apaga e volta junto com o líquido.
+
+### 2026-11-27 — 24. Spec 010: tela de usuário e renumeração
+- `/speckit-specify` criou a **010 — Tela de usuário (perfil)**: a foto fica no centro, dentro de
+  uma caneca de café vista de cima (iniciais quando não há foto); abaixo, os dados e o
+  **histórico de compras** (10 por vez, com detalhe ou acompanhamento do pedido).
+- Pode editar: nome, nome de usuário, foto, endereço de entrega padrão (mapa da 008), e-mail
+  (confirmação simulada) e senha (pede a senha atual). Atalhos: Favoritos, Meus cartões, Sons do
+  app, tema e Sair.
+- Decisão do usuário: entra como **010** porque cartões e sons dependem do perfil. Renumeração:
+  ~~010 cadastro de cartões~~ → **011**; ~~011 sons~~ → **012**. As entradas 21–23 acima usam a
+  numeração antiga.
+
+### 2026-11-27 — 25. Spec 013: transições de tela (bônus)
+- `/speckit-specify` criou a **013 — Animações de transição entre telas**: cada troca de tela tem
+  uma animação simples (200–350 ms), com tabela por tipo (avançar/voltar, abas, popups, carrinho
+  lateral, produto crescendo até os detalhes) e som curto de transição, seguindo as regras da 012.
+- Marcada como **requisito opcional (bônus)**: o projeto fica completo sem ela, e as transições
+  especiais da 003 (pagamento e sem internet) têm prioridade.
+
+### 2026-11-27 — 26. Prévia visual 03
+- Criada a **`/visual-nao-implementado-03`** (a 02 não foi alterada): xícara caindo no erro,
+  tela de sem internet com a volta da rede, grupo "Conta" (perfil com a caneca, cadastro de
+  cartão e Meus cartões), grupo "Transições" (013) e botão de sons sintetizados (012), só
+  ilustrativos.
 
 ---
 
@@ -203,8 +274,10 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 | Popup do dia | Aleatório (50%); baseado nos pedidos ou no mais consumido |
 | Carrinho lateral | Em todas as telas de compra, menos no mapa |
 | Mapa | Desenhado no app, sem pacote; acompanha a entrega e escolhe o endereço |
-| Dependências | Só de animação (exceto a foto de perfil) |
+| Dependências | Só de animação (exceções: foto de perfil e áudio) |
 | Animações | Separadas e identificadas (`docs/ASSETS.md`) |
+| Resultado do pagamento | Tela inteira (celular = xícara): café + "certo" em latte art, ou fumaça vermelha + X; dois botões; saída contínua (o líquido passa) |
+| Prévia visual vigente | `visual-nao-implementado-03` |
 
 ## Ordem das specs (ordem de implementação)
 
@@ -219,6 +292,10 @@ O usuário escreveu o protótipo e respondeu 15 perguntas, mais 3 de arquitetura
 | 007 | `specs/007-carrinho-pagamento` | Carrinho lateral e completo, pagamento simulado com estorno |
 | 008 | `specs/008-mapa-entrega` | Mapa simulado de Palmas |
 | 009 | `specs/009-esteira-testes-fluxos` | Esteira de testes dos fluxos (planejada para depois) |
+| 010 | `specs/010-tela-usuario` | Tela de usuário: foto dentro de uma caneca, dados editáveis e histórico de compras |
+| 011 | `specs/011-cadastro-cartoes` | Cadastro de cartões só de demonstração (sem confirmar), pelo pagamento e por "Meus cartões" |
+| 012 | `specs/012-sons-interface` | Sons das telas de animação (tema café) e dos botões, com créditos das bases gratuitas |
+| 013 | `specs/013-transicoes-telas` | Transições entre telas com som (**bônus, opcional**) |
 
 ## Estado atual (em 2026-11-27)
 

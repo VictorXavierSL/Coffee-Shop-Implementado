@@ -36,7 +36,9 @@ Instruções para o Claude Code neste repositório. Valem em qualquer máquina.
 - Specs em `specs/`, numeradas **na ordem de implementação**:
   001 contrato da API → 002 servidor mock → 003 telas de estado (visual) →
   004 inter telas (onde e quando aparecem) → 005 autenticação → 006 catálogo →
-  007 carrinho e pagamento → 008 mapa → 009 esteira de testes.
+  007 carrinho e pagamento → 008 mapa → 009 esteira de testes →
+  010 tela de usuário (perfil) → 011 cadastro de cartões (demonstração) →
+  012 sons das telas e dos botões → 013 transições de tela (bônus, opcional).
 - Feature ativa: `.specify/feature.json`. Esse arquivo fica **fora do git** (padrão do
   spec-kit, porque vale só para a máquina). Numa máquina nova, crie-o com
   `{ "feature_directory": "specs/<pasta-da-feature>" }`, usando a próxima feature não

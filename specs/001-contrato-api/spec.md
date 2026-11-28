@@ -16,7 +16,8 @@ no README. Use como base o que já temos."
 > **Ordem de implementação das specs:** 001 contrato da API → 002 servidor mock →
 > 003 telas de estado → 004 inter telas (loading e erros previstos) → 005 autenticação →
 > 006 catálogo → 007 carrinho e pagamento →
-> 008 mapa de entrega → 009 esteira de testes.
+> 008 mapa de entrega → 009 esteira de testes → 010 tela de usuário →
+> 011 cadastro de cartões → 012 sons das telas e dos botões → 013 transições de tela (bônus).
 
 ## User Scenarios & Testing *(mandatory)*
 

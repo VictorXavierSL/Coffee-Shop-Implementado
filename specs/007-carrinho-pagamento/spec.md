@@ -147,7 +147,9 @@ seguir as instruções de remoção para desligar a simulação.
 - **FR-011**: O app MUST exibir telas distintas para processando, aprovado, recusado e estornado;
   as animações são da feature 003.
 - **FR-012**: Dados de cartão MUST NOT ser armazenados; só a forma de pagamento e os 4 últimos
-  dígitos podem ser guardados no pedido.
+  dígitos podem ser guardados no pedido. Exceção da spec 011 (decisão do usuário em
+  2026-11-27): cartões de demonstração salvos na conta guardam só bandeira, 4 últimos dígitos,
+  nome impresso e validade; número completo e código de segurança continuam proibidos.
 
 ### Key Entities
 

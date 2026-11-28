@@ -13,6 +13,14 @@ a animação de café fumegante e as telas de erro previstas."
 > (os componentes de tela de estado e as animações substituíveis). Esta **004** define **onde e
 > quando** cada inter tela aparece: em qual fluxo, disparada por qual situação ou código de erro
 > do contrato (001), com qual texto e qual ação. Nada do visual é redefinido aqui.
+>
+> **Nota de 2026-11-27 (clarificação da spec 003):** o resultado do pagamento (aprovado,
+> recusado e estornado) passou a ocupar a **tela inteira**, sem cabeçalho, barra de navegação ou
+> carrinho lateral, e não avança sozinho: cada tela tem **dois botões** (ver o catálogo em
+> FR-005). O visual (líquido, fumaça e animação de saída) está na 003.
+>
+> **Nota de 2026-11-27 (clarificação da spec 003):** "sem internet" no aparelho do cliente virou
+> uma inter tela própria (`no_internet`), separada do "fora do ar" do servidor (`server_down`).
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -133,7 +141,8 @@ expirada.
 
   | Situação / código | Inter tela | Texto | Ação |
   |---|---|---|---|
-  | Sem conexão, tempo esgotado, `5xx`, `network_error` | Tela inteira **fora do ar** (`server_down`) | "Estamos fora do ar. Tente novamente em instantes." | Tentar novamente (repete) |
+  | Aparelho sem internet (nenhuma rede Wi-Fi ou de dados disponível) | Tela inteira **sem internet** (`no_internet`) | "Sem conexão com a internet" / "Verifique o Wi-Fi ou os dados móveis." | Automática: quando a rede volta, repete a operação e leva à tela que o cliente tentava abrir; "Tentar novamente" disponível enquanto isso |
+  | Aparelho com internet, mas o servidor não responde: tempo esgotado, `5xx`, `network_error` | Tela inteira **fora do ar** (`server_down`) | "Estamos fora do ar. Tente novamente em instantes." | Tentar novamente (repete) |
   | `401 unauthorized` (sessão inválida/expirada) | Aviso e ida ao Login | "Sua sessão expirou. Entre novamente." | Ir para o Login |
   | `401 invalid_credentials` | Mensagem no formulário | "Usuário ou senha incorretos." | — |
   | Conta bloqueada por tentativas | Mensagem no formulário | "Muitas tentativas. Tente novamente em X minutos." | — |
@@ -145,16 +154,17 @@ expirada.
   | `400 empty_cart` | Estado vazio do carrinho | "Seu carrinho está vazio." | Ver cardápio |
   | `422 invalid_item` / `invalid_size` | Mensagem no carrinho, com o item destacado | "Este item não está mais disponível nesse tamanho." | Remover ou trocar |
   | `422 address_required` / fora da área | Mensagem no endereço | "Informe um endereço dentro da área de entrega." | Escolher no mapa |
-  | Pagamento recusado | **Resultado do pagamento** (`payment_failure`) | "Não foi possível realizar a transação." | Tentar outra forma |
-  | Pagamento estornado | **Resultado do pagamento** (`payment_failure`) | "Não foi possível concluir o pedido. O valor foi estornado." | Voltar ao carrinho |
+  | Pagamento aprovado | **Resultado do pagamento** em tela inteira (`payment_success`) | "Compra concluída!" | Acompanhar pedido · Voltar ao cardápio |
+  | Pagamento recusado | **Resultado do pagamento** em tela inteira (`payment_failure`) | "Não foi possível realizar a transação." | Tentar outra forma · Voltar ao cardápio |
+  | Pagamento estornado | **Resultado do pagamento** em tela inteira (`payment_failure`) | "Não foi possível concluir o pedido. O valor foi estornado." | Voltar ao carrinho · Voltar ao cardápio |
   | Foto de perfil inválida ou grande demais | Mensagem no avatar | "Use uma foto JPG ou PNG de até 5 MB." | Escolher outra |
   | Qualquer outro erro não previsto | Tela inteira **erro** (`coffee_spilled`) | "Algo deu errado." | Tentar novamente |
 
 - **FR-006**: Todo código de erro do contrato (spec 001) MUST ter uma linha no catálogo; um
   código novo no contrato MUST atualizar o catálogo na mesma entrega.
 - **FR-007**: Textos técnicos (código HTTP, stack, nomes internos) MUST NOT aparecer ao cliente.
-- **FR-008**: Prioridade quando há mais de um erro: fora do ar > sessão expirada > resultado de
-  pagamento > não encontrado > erro de campo/formulário > erro parcial.
+- **FR-008**: Prioridade quando há mais de um erro: sem internet > fora do ar > sessão expirada >
+  resultado de pagamento > não encontrado > erro de campo/formulário > erro parcial.
 - **FR-009**: Inter telas de erro MUST NOT se empilhar; um erro novo substitui o anterior.
 - **FR-010**: Toda inter tela de erro em tela inteira MUST ter uma ação que repete a operação ou
   leva a um destino seguro, sem descartar o carrinho nem a sessão válida.
